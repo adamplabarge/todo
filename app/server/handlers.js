@@ -11,6 +11,7 @@ const getId = (path, req) => R.compose(
   parseInt,
   R.pathOr(-1, [path, 'id'])
 )(req)
+const isUndefined = value => value !== undefined
 
 const handlers = {
   get: {
@@ -20,10 +21,12 @@ const handlers = {
           if (!err && data) {
             const id = getId('params', req)
             if (id !== -1) {
-              const selected = R.find(R.propEq('id', id))(data)
-              res.send({ todos: [selected]})
-            } else {
-              res.status(404).send('Todo Not found')
+              const found = R.find(R.propEq('id', id))(data)
+              if (!isUndefined(found)) {
+                res.send({ todos: [selected]})
+              } else {
+                res.status(404).send(`Todo ${id}: not found.`)
+              }
             }
           }
           if (err) {
@@ -87,23 +90,27 @@ const handlers = {
       try {
         _data.read('todos', 'index', (err, data) => {
           if (!err && data) {
-            const id = getId('body', req)
+            const id = getId('params', req)
             if (id !== -1) {
-              const todo = {
-                ...R.find(R.propEq('id', id))(data),
-                ...R.propOr({}, 'body', req)
-              }
-              const allButTodo = data.filter(todo => todo.id !== id)
-              _data.update('todos', 'index', [...allButTodo, todo], (err) => {
-                if (!err) {
-                  res.send(todo)
-                } else {
-                  console.log(err)
-                  next(err)
+              const found = R.find(R.propEq('id', id))(data)
+              console.log(found)
+              if (isUndefined(found)) {
+                const todo = {
+                  ...found,
+                  ...R.propOr({}, 'body', req)
                 }
-              })
-            } else {
-              req.status(404).send('Todo not found')
+                const allButTodo = data.filter(todo => todo.id !== id)
+                _data.update('todos', 'index', [...allButTodo, todo], (err) => {
+                  if (!err) {
+                    res.send(todo)
+                  } else {
+                    console.log(err)
+                    next(err)
+                  }
+                })
+              } else {
+                res.status(404).send(`Todo ${id}: not found.`)
+              }
             }
           }
           if (err) {
