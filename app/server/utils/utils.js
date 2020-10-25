@@ -1,3 +1,5 @@
+const R = require('ramda')
+
 /*
  * Helpers for various task
  */
@@ -8,34 +10,41 @@ const utils = {};
 // Parse a JSON string to an object in all cases w/o throwing error
 utils.parseJsonToObject = (str) => {
     try{
-        let obj = JSON.parse(str);
-        return obj;
+        let obj = JSON.parse(str)
+        return obj
     } catch (e) {
-        return {};
+        return {}
     }
 }
 
 // Create a string of random alphnumeric chars of a given lenght
 utils.createRandomString = (strLength) => {
-    strLength = typeof(strLength) === 'number' && strLength > 0 ? strLength : false;
+    strLength = typeof(strLength) === 'number' && strLength > 0 ? strLength : false
     if (strLength) {
         // Define all the possible char that could go in
-        let possibleChars = 'abcdefgihjklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-        let str = '';
+        let possibleChars = 'abcdefgihjklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+        let str = ''
 
         for (let i = 1; i <= strLength; i++) {
             // Get random char
-            let randomChar = possibleChars.charAt(Math.floor(Math.random() * possibleChars.length));
+            let randomChar = possibleChars.charAt(Math.floor(Math.random() * possibleChars.length))
             // Append to final string
             str += randomChar
         }
 
         // Return string
-        return str;
+        return str
     } else {
-        return false;
+        return false
     }
-};
+}
+
+utils.getId = (path, req) => R.compose(
+    parseInt,
+    R.pathOr(-1, [path, 'id'])
+  )(req)
+  
+utils.isUndefined = value => value === undefined
 
 // Export the module
 module.exports = utils

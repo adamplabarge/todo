@@ -1,17 +1,11 @@
 const R = require('ramda')
-
+const utils = require('./utils/utils')
 /** db */
 const _data = require('./utils/data')
 
 /** Models */
 const Todo = require('./model/todos.json')
 
-/** _utils */
-const getId = (path, req) => R.compose(
-  parseInt,
-  R.pathOr(-1, [path, 'id'])
-)(req)
-const isUndefined = value => value !== undefined
 
 const handlers = {
   get: {
@@ -19,10 +13,10 @@ const handlers = {
       try {
         _data.read('todos', 'index', (err, data) => {
           if (!err && data) {
-            const id = getId('params', req)
+            const id = utils.getId('params', req)
             if (id !== -1) {
               const found = R.find(R.propEq('id', id))(data)
-              if (!isUndefined(found)) {
+              if (!utils.isUndefined(found)) {
                 res.send({ todos: [selected]})
               } else {
                 res.status(404).send(`Todo ${id}: not found.`)
@@ -90,10 +84,10 @@ const handlers = {
       try {
         _data.read('todos', 'index', (err, data) => {
           if (!err && data) {
-            const id = getId('params', req)
+            const id = uils.getId('params', req)
             if (id !== -1) {
               const found = R.find(R.propEq('id', id))(data)
-              if (!isUndefined(found)) {
+              if (!utils.isUndefined(found)) {
                 const todo = {
                   ...found,
                   ...R.propOr({}, 'body', req)
@@ -108,6 +102,7 @@ const handlers = {
                   }
                 })
               } else {
+                console.log('lkj')
                 res.status(404).send(`Todo ${id}: not found.`)
               }
             }
