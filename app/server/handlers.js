@@ -93,7 +93,6 @@ const handlers = {
             const id = getId('params', req)
             if (id !== -1) {
               const found = R.find(R.propEq('id', id))(data)
-              console.log(found)
               if (isUndefined(found)) {
                 const todo = {
                   ...found,
