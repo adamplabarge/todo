@@ -1,0 +1,12 @@
+{
+  "id": 0,
+  "user": 0,
+  "group": "",
+  "title": "",
+  "priority": 0,
+  "repeat": false,
+  "notification": false,
+  "due": "",
+  "complete": false,
+  "sticky": false
+}
