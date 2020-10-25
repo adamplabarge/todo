@@ -17,13 +17,15 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
 routes.get.forEach(({ route, handler }) => {
-  console.log(`Route: GET || ${route}`)
   app.get(makeRoute(route), handler)
 })
 
 routes.post.forEach(({ route, handler }) => {
-  console.log(`Route: POST || ${route}`)
   app.post(makeRoute(route), handler)
+})
+
+routes.delete.forEach(({ route, handler }) => {
+  app.delete(makeRoute(route), handler)
 })
 
 if (process.env.NODE_ENV === 'production') {
@@ -34,7 +36,7 @@ if (process.env.NODE_ENV === 'production') {
   app.get('*', function(req, res) {
     console.log(__dirname)
     res.sendFile(path.join(__dirname, '../client/build', 'index.html'))
-  });
+  })
 }
 
 app.listen(port, () => console.log(`Listening on port ${port}`))

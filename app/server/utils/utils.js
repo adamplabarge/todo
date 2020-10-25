@@ -1,5 +1,7 @@
 const R = require('ramda')
 
+const entities = require('../model/entities')
+
 /*
  * Helpers for various task
  */
@@ -39,11 +41,19 @@ utils.createRandomString = (strLength) => {
     }
 }
 
-utils.getId = (path, req) => R.compose(
+// get the entity id from request and path and convet to integer
+utils.getId = (req, path = 'params') => R.compose(
     parseInt,
     R.pathOr(-1, [path, 'id'])
   )(req)
   
+// get the entity from req and path
+utils.getEntity = (req, path = 'params') => R.path([path,'entity'], req) 
+
+// is valid entity
+utils.isValidEntity = entity => R.includes(entity, entities.entities)
+
+// is value undefined
 utils.isUndefined = value => value === undefined
 
 // Export the module
