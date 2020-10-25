@@ -17,10 +17,12 @@ const handlers = {
             if (id !== -1) {
               const found = R.find(R.propEq('id', id))(data)
               if (!utils.isUndefined(found)) {
-                res.send({ todos: [selected]})
+                res.send(selected)
               } else {
                 res.status(404).send(`Todo ${id}: not found.`)
               }
+            } else {
+              res.send(data)
             }
           }
           if (err) {
@@ -102,7 +104,6 @@ const handlers = {
                   }
                 })
               } else {
-                console.log('lkj')
                 res.status(404).send(`Todo ${id}: not found.`)
               }
             }
