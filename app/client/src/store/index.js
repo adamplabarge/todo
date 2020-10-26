@@ -1,7 +1,7 @@
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
 import createSagaMiddleware from 'redux-saga'
 import sagas from 'sagas'
-import counterReducer from 'components/Counter/counterSlice'
+import todosReducer from 'components/Todos/todosSlice'
 
 const sagaMiddleware = createSagaMiddleware()
 
@@ -12,7 +12,7 @@ const reduxDevTools = devMode ? window.__REDUX_DEVTOOLS_EXTENSION__ && window.__
 const middleware = [...getDefaultMiddleware({ thunk: false }), sagaMiddleware]
 
 const reducer = {
-  counter: counterReducer
+  todos: todosReducer
 }
 
 export default () => {
