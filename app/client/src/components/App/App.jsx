@@ -1,5 +1,7 @@
 import React from 'react'
 import styled from '@emotion/styled'
+import { createTypeAction } from 'utils'
+import { useDispatch } from 'react-redux'
 
 import { Datetime } from 'components/Datetime'
 import {
@@ -12,7 +14,11 @@ import * as Todos from 'components/Todos'
 import * as Users from 'components/Users'
 import * as Groups from 'components/Groups'
 
-function App() {
+export const startApp = createTypeAction('startApp')
+
+const App = () => {
+  const dispatch = useDispatch()
+  dispatch(startApp())
   return (
     <Router>
       <AppWrapper>

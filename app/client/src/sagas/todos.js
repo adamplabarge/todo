@@ -45,7 +45,7 @@ function* deleteWatcher() {
 
 }
 
-export default function* api() {
+export default function* sagas() {
   yield all([
     createWatcher(),
     readWatcher(),

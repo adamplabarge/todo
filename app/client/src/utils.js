@@ -1,18 +1,14 @@
+import { createAction as createActionRedux } from '@reduxjs/toolkit'
+import { curry } from 'ramda'
+
 /** Actions */
-class Action {
-  constructor(type, props) {
-    this.type = type
-    this.payload = {
-      ...props
-    }
+export const createAction = curry((type, args) => createActionRedux(type, () => ({
+  payload: {
+    ...args
   }
+})))
 
-  static toString() {
-    return this.type
-  }
-}
-
-export const createAction = (type, props) => new Action(type, props)
+export const createTypeAction = (type) => createAction(type, {})
 
 /** Types */
 export const isNull = value => value === null
