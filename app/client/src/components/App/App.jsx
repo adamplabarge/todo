@@ -32,10 +32,12 @@ const App = () => {
   const hasUsers = useSelector(hasListPath(Users))
   const hasGroups = useSelector(hasListPath(Groups))
 
-  const view = useMemo(
-    () => hasUsers ? hasGroups ? TODOS : GROUPS : USERS,
-    [hasUsers, hasGroups]
-  )
+  // const view = useMemo(
+  //   () => hasUsers ? hasGroups ? TODOS : GROUPS : USERS,
+  //   [hasUsers, hasGroups]
+  // )
+
+  const view = USERS
 
   const StartUpView = startUpViews[view]
 
@@ -105,4 +107,5 @@ const AppHeader = styled.div`
 `
 
 const AppBody = styled.div`
+  padding: 1em;
 `

@@ -33,7 +33,7 @@ export const state = createSlice({
   },
 });
 
-const selectSlice = state => state[ENTITY]
+const selectSlice = state => prop(ENTITY, state)
 
 export const selectLoading = createSelector(
   selectSlice,

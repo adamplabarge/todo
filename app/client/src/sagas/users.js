@@ -29,12 +29,30 @@ function* readWatcher() {
 }
 
 
-function* updateEntity() { 
+function* updateEntity(action) {
+  console.log(action)
+  const { id, name, icon } = action.payload 
+  const json = yield fetch(
+    `${API_BASE}/${ENTITY}/${id}`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        id,
+        name,
+        icon
+      })
+    }
+  )
+  .then(res => res.json())
 
+  console.log(json)
 } 
 
 function* updateWatcher() {
-
+  yield takeLatest(actions.setCreate.toString(), updateEntity)
 }
 
 function* deleteEntity() {
