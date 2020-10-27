@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import styled from '@emotion/styled'
 import { createTypeAction } from 'utils'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { USERS, GROUPS, TODOS } from '../../constants'
 
 import { Datetime } from 'components/Datetime'
 import {
@@ -16,9 +17,25 @@ import * as Groups from 'components/Groups'
 
 export const startApp = createTypeAction('startApp')
 
+const startUpViews = {
+  [USERS]: <Users.Editor />,
+  [GROUPS]: <Groups.Editor />,
+  [TODOS]: <Todos.Editor />
+}
+
 const App = () => {
   const dispatch = useDispatch()
+
+  const hasUsers = useSelector(Users.state.selectHasList)
+  const hasGroups = useSelector(Groups.state.selectHasList)
+
+  const view = useMemo(
+    () => hasUsers ? hasGroups ? TODOS : GROUPS : USERS,
+    [hasUsers, hasGroups]
+  )
   
+  const StartUpView = startUpViews[view]
+
   useEffect(() => {
     dispatch(startApp())
   }, [])
@@ -51,7 +68,9 @@ const App = () => {
               <Groups.Editor />
             </Route>
             <Route path="/">
-              <Todos.List />
+              {
+                StartUpView
+              }
             </Route>
           </Switch>
         </AppBody>

@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { createSelector } from 'reselect'
-import { prop } from 'ramda'
+import { prop, isEmpty, complement } from 'ramda'
 
 const ENTITY = 'todos'
 
@@ -48,6 +48,11 @@ export const selectList = createSelector(
 export const selectCreate = createSelector(
   selectSlice,
   prop('editor')
+)
+
+export const selectHasList = createSelector(
+  selectList,
+  complement(isEmpty)
 )
 
 export const { read, setRead, create, setCreate } = state.actions;
