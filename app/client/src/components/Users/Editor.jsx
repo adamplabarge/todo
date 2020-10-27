@@ -1,11 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'utils'
 import * as state from './state'
-import { useCookies } from 'react-cookie'
-import { prop } from 'ramda'
+import { prop, propOr } from 'ramda'
 import styled from '@emotion/styled'
 
 import SketchPicker from 'react-color'
@@ -15,13 +14,13 @@ const Editor = ({
   id
 }) => {
   const dispatch = useDispatch()
-  
-  const [color, setColor] = useState('#fff')
-  const [cookies, setCookies] = useCookies(['user'])
+
+  const userSelector = id ? state.selectUser : state.selectEditor 
 
   const loading = useSelector(state.selectLoading) 
-  const userId = id || prop('id', cookies)
-  const user = useSelector(state.selectUser, { userId })
+  const user = useSelector(userSelector)
+  const [color, setColor] = useState(propOr('#fff', 'icon', user))
+console.log(user)
   const handleCreateUser = () => {
     dispatch(state.create())
   }
@@ -29,39 +28,46 @@ const Editor = ({
   const handleColorPicker = ({ hex }) => setColor(hex) 
 
   const { register, handleSubmit } = useForm()
-  const onSubmit = data => dispatch(state.setCreate({
+  const onSubmit = data => dispatch(state.update({
     ...data,
     icon: color
   }))
 
-
-  const showInitialCreateBtn = !id && !prop('name', cookies) && !user
+  useEffect(() => {
+    if (user) {
+      setColor(prop('icon', user))
+    }
+  }, [user])
 
   return <>
     {
       loading && <div>Loading right now, thank you.</div>
     }
     {
-      showInitialCreateBtn && <button onClick={handleCreateUser}>Create Initial User</button> 
+      user && 
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <input name="id" type="hidden" value={prop('id', user)} ref={register} />
+        <Label>
+          <span>Name:</span>
+          <Input
+            name="name"
+            placeholder="enter user name"
+            ref={register}
+          />
+        </Label>
+        
+        <Label>
+          <span>Icon color:</span>
+          <ColorBox color={color} />
+          <SketchPicker
+            color={color}
+            onChange={handleColorPicker} />
+        </Label>
+
+        <input type="submit" value="Save" />
+
+      </form>
     }
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <input name="id" type="hidden" value={prop('id', user)} ref={register} />
-      <Label>
-        <span>Name:</span>
-        <Input name="name" placeholder="enter user name" ref={register} />
-      </Label>
-      
-      <Label>
-        <span>Icon color:</span>
-        <ColorBox color={color} />
-        <SketchPicker
-          color={color}
-          onChange={handleColorPicker} />
-      </Label>
-
-      <input type="submit" value="Save" />
-
-    </form>
   </>
 }
 

@@ -15,8 +15,9 @@ const List = () => {
   return (
     <>
       {
-        loading && <div>We are loading something...</div>
+        loading && <div>We are loading Todos...</div>
       }
+      The Todo Items
     </>
   )
 }

@@ -1,16 +1,14 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect } from 'react'
 import styled from '@emotion/styled'
 import { createTypeAction } from 'utils'
-import { useDispatch, useSelector } from 'react-redux'
-import { USERS, GROUPS, TODOS } from '../../constants'
-import { path } from 'ramda'
+import { useDispatch } from 'react-redux'
 
 import { Datetime } from 'components/Datetime'
 import {
   BrowserRouter as Router,
   Switch,
   Route,
-} from "react-router-dom";
+} from "react-router-dom"
 
 import * as Todos from 'components/Todos'
 import * as Users from 'components/Users'
@@ -18,28 +16,8 @@ import * as Groups from 'components/Groups'
 
 export const startApp = createTypeAction('startApp')
 
-const startUpViews = {
-  [USERS]: <Users.Editor />,
-  [GROUPS]: <Groups.Editor />,
-  [TODOS]: <Todos.Editor />
-}
-
-const hasListPath = path(['state', 'selectHasList'])
-
 const App = () => {
   const dispatch = useDispatch()
-
-  const hasUsers = useSelector(hasListPath(Users))
-  const hasGroups = useSelector(hasListPath(Groups))
-
-  // const view = useMemo(
-  //   () => hasUsers ? hasGroups ? TODOS : GROUPS : USERS,
-  //   [hasUsers, hasGroups]
-  // )
-
-  const view = USERS
-
-  const StartUpView = startUpViews[view]
 
   useEffect(() => {
     dispatch(startApp())
@@ -54,28 +32,26 @@ const App = () => {
         </AppHeader>
         <AppBody>
           <Switch>
-            <Route path="/users">
-              <Users.List />
-            </Route>
             <Route path="/users/editor">
               <Users.Editor />
             </Route>
-            <Route path="/todos">
-              <Todos.List />
+            <Route path="/users">
+              <Users.List />
             </Route>
             <Route path="/todos/editor">
               <Todos.Editor />
             </Route>
-            <Route path="/groups">
-              <Groups.List />
+            <Route path="/todos">
+              <Todos.List />
             </Route>
             <Route path="/groups/editor">
               <Groups.Editor />
             </Route>
+            <Route path="/groups">
+              <Groups.List />
+            </Route>
             <Route path="/">
-              {
-                StartUpView
-              }
+              <Todos.List />
             </Route>
           </Switch>
         </AppBody>

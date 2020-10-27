@@ -1,11 +1,16 @@
 import React from 'react'
 import styled from '@emotion/styled'
 
+import { Link } from 'react-router-dom'
+
 const UserMenu = () => {
+
   return <>
-    <UserIcon>
-      <UserLabel></UserLabel>
-    </UserIcon>
+    <Link to={`/users`}>
+      <UserIcon>
+        <UserLabel></UserLabel>
+      </UserIcon>
+    </Link>
   </>
 }
 

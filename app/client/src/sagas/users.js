@@ -30,7 +30,6 @@ function* readWatcher() {
 
 
 function* updateEntity(action) {
-  console.log(action)
   const { id, name, icon } = action.payload 
   const json = yield fetch(
     `${API_BASE}/${ENTITY}/${id}`,
@@ -48,11 +47,11 @@ function* updateEntity(action) {
   )
   .then(res => res.json())
 
-  console.log(json)
+  yield put({ type: actions.setRead.toString(), json })
 } 
 
 function* updateWatcher() {
-  yield takeLatest(actions.setCreate.toString(), updateEntity)
+  yield takeLatest(actions.update.toString(), updateEntity)
 }
 
 function* deleteEntity() {

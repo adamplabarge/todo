@@ -54,13 +54,13 @@ const handlers = {
         _data.read(entity, 'index', (err, data) => {
           if (!err && data) {
             if (R.isEmpty(data)) {
-              const newItem = {
+              const item = {
                 ...entityDefaults[entity],
                 id: 1
               }
-              _data.update(entity, 'index', [newItem], (err) => {
+              _data.update(entity, 'index', [item], (err) => {
                 if (!err) {
-                  res.send(newItem)
+                  res.send(item)
                 } else {
                   console.log(err)
                   next(err)

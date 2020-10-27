@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { createSelector } from 'reselect'
-import { prop, isEmpty, complement, head, propEq } from 'ramda'
+import { prop, isEmpty, complement, head, propEq, propOr } from 'ramda'
 
 const ENTITY = 'users'
 
@@ -20,6 +20,10 @@ export const state = createSlice({
       ...state,
       loading: false,
       editor: action.payload
+    }),
+    update: (state) => ({
+      ...state,
+      loading: true,
     }),
     read: (state) => ({
       ...state,
@@ -45,20 +49,20 @@ export const selectList = createSelector(
   prop('list')
 )
 
-export const selectCreate = createSelector(
-  selectSlice,
-  prop('editor')
-)
-
 export const selectHasList = createSelector(
   selectList,
   complement(isEmpty)
 )
 
+export const selectEditor = createSelector(
+  selectSlice,
+  prop('editor')
+)
+
 export const selectUser = createSelector(
   selectList,
-  (_, props) => props,
-  (list, { id }) => {
+  (_, props) => propOr(null, 'id', props),
+  (list, id) => {
     if (!list) return null
     const item = list.find(propEq('id', id))
     if (item) return item
@@ -66,5 +70,5 @@ export const selectUser = createSelector(
   } 
 )
 
-export const { read, setRead, create, setCreate } = state.actions;
+export const { read, setRead, create, setCreate, update } = state.actions;
 export default state.reducer

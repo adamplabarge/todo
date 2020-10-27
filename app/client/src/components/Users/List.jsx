@@ -3,7 +3,12 @@ import { useSelector, useDispatch } from 'react-redux'
 import * as state from './state'
 import { isNull } from 'utils'
 
+import { Link, useRouteMatch } from 'react-router-dom'
+
 const List = () => {
+
+  const { path } = useRouteMatch()
+
   const {
     selectLoading,
     selectList,
@@ -18,11 +23,17 @@ const List = () => {
     dispatch(read())
   }
 
+  const handleCreateUser = () => {
+    dispatch(state.create())
+  }
+
+
   return (
     <>
       {
         loading && <div>We are loading something...</div>
       }
+      <Link to={`${path}/editor`} onClick={handleCreateUser}><button>Create User</button></Link>
     </>
   )
 }
