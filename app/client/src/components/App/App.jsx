@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from '@emotion/styled'
 import { createTypeAction } from 'utils'
 import { useDispatch } from 'react-redux'
@@ -18,7 +18,11 @@ export const startApp = createTypeAction('startApp')
 
 const App = () => {
   const dispatch = useDispatch()
-  dispatch(startApp())
+  
+  useEffect(() => {
+    dispatch(startApp())
+  }, [])
+
   return (
     <Router>
       <AppWrapper>
