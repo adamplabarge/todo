@@ -1,20 +1,52 @@
 import React from 'react'
 import styled from '@emotion/styled'
 
-import { Todos } from 'components/Todos'
 import { Datetime } from 'components/Datetime'
-import { UserMenu } from 'components/Users'
-import { Groups } from 'components/Groups'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from "react-router-dom";
+
+import * as Todos from 'components/Todos'
+import * as Users from 'components/Users'
+import * as Groups from 'components/Groups'
 
 function App() {
   return (
-    <AppWrapper>
-      <AppHeader>
-        <Datetime />
-        <UserMenu />
-      </AppHeader>
-      <Todos />
-    </AppWrapper>
+    <Router>
+      <AppWrapper>
+        <AppHeader>
+          <Datetime />
+          <Users.UsersMenu />
+        </AppHeader>
+        <AppBody>
+          <Switch>
+            <Route path="/users">
+              <Users.List />
+            </Route>
+            <Route path="/users/editor">
+              <Users.Editor />
+            </Route>
+            <Route path="/todos">
+              <Todos.List />
+            </Route>
+            <Route path="/todos/editor">
+              <Todos.Editor />
+            </Route>
+            <Route path="/groups">
+              <Groups.List />
+            </Route>
+            <Route path="/groups/editor">
+              <Groups.Editor />
+            </Route>
+            <Route path="/">
+              <Todos.List />
+            </Route>
+          </Switch>
+        </AppBody>
+      </AppWrapper>
+    </Router>
   )
 }
 
@@ -38,4 +70,7 @@ const AppHeader = styled.div`
   -webkit-box-shadow: 0px 3px 8px -3px #27292B; 
   box-shadow: 0px 3px 8px -3px #27292B;
   align-items: center;
+`
+
+const AppBody = styled.div`
 `

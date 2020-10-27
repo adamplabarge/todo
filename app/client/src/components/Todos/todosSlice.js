@@ -5,36 +5,48 @@ import { prop } from 'ramda'
 export const todosSlice = createSlice({
   name: 'todos',
   initialState: {
+    loading: false,
     todos: null,
-    getting: false
+    create: null
   },
   reducers: {
-    getTodos: (state) => {
-      return {
-        ...state,
-        getting: true
-      }
-    },
-    setTodos: (state, action) => {
-      return {
-        ...state,
-        getting: false,
-        todos: action.payload
-      }
-    }
+    create: (state) => ({
+      ...state,
+      loading: true,
+    }),
+    setCreate: (state, action) => ({
+      ...state,
+      loading: false,
+      create: action.payload
+    }),
+    read: (state) => ({
+      ...state,
+      loading: true
+    }),
+    setRead: (state, action) => ({
+      ...state,
+      loading: false,
+      todos: action.payload
+    }),
   },
 });
 
 const selectState = state => state.todos
+
+export const selectLoading = createSelector(
+  selectState,
+  prop('loading')
+)
+
 export const selectTodos = createSelector(
   selectState,
   prop('todos')
 )
-export const selectGetting = createSelector(
+
+export const selectCreate = createSelector(
   selectState,
-  prop('getting')
+  prop('create')
 )
 
-
-export const { getTodos, setTodos } = todosSlice.actions;
+export const { read, setRead, create, setCreate } = todosSlice.actions;
 export default todosSlice.reducer

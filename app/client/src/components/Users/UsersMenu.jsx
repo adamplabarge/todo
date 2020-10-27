@@ -4,7 +4,7 @@ import styled from '@emotion/styled'
 const UserMenu = () => {
   return <>
     <UserIcon>
-      <UserLabel>A</UserLabel>
+      <UserLabel></UserLabel>
     </UserIcon>
   </>
 }

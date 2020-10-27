@@ -1,4 +1,9 @@
-import UserMenu from './UserMenu'
+import UsersMenu from './UsersMenu'
+import Editor from './Editor'
+import List from './List'
+
 export {
-  UserMenu
+  UsersMenu,
+  Editor,
+  List
 }

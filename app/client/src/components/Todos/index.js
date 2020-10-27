@@ -1,7 +1,7 @@
-import Todos from './Todos'
-import TodosEditor from './TodosEditor'
+import Editor from './Editor'
+import List from './List'
 
 export {
-  Todos,
-  TodosEditor
+  Editor,
+  List
 }

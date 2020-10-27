@@ -1,4 +1,7 @@
-import Groups from './Groups'
+import Editor from './Editor'
+import List from './List'
+
 export {
-  Groups
+  Editor,
+  List
 }

@@ -1,24 +1,38 @@
-import { apiBase } from 'services'
 import { put, takeLatest, all } from 'redux-saga/effects'
 import * as actions from 'components/Todos/todosSlice'
 
-function* getTodos() {
+const apiBase = '/api/v1.0'
+
+function* createTodos() {
+  console.log('asdf')
+  const json = yield fetch(`${apiBase}/create/todos`)
+    .then(res => res.json())
+
+  yield put({ type: actions.setCreate.toString(), payload: json })
+}
+
+function* createTodosWatcher() {
+  yield takeLatest(actions.create.toString(), createTodos)
+}
+
+function* readTodos() {
   const json = yield fetch(`${apiBase}/todos`)
     .then(res => res.json())
 
-  yield put({ type: actions.setTodos, payload: json })
+  yield put({ type: actions.setRead.toString(), payload: json })
 
 }
 
-function* getTodosWatcher() {
-  yield takeLatest(actions.getTodos.toString(), getTodos)
+function* readTodosWatcher() {
+  yield takeLatest(actions.read.toString(), readTodos)
 }
 
-function* putTodos() {
+
+function* updateTodos() { 
 
 } 
 
-function* putTodosWatcher() {
+function* updateTodosWatcher() {
 
 }
 
@@ -30,10 +44,11 @@ function* deleteTodosWatcher() {
 
 }
 
-export default function* todos() {
+export default function* api() {
   yield all([
-    getTodosWatcher(),
-    putTodosWatcher(),
+    createTodosWatcher(),
+    readTodosWatcher(),
+    updateTodosWatcher(),
     deleteTodosWatcher()
   ])
 }
