@@ -3,6 +3,7 @@ import styled from '@emotion/styled'
 import { createTypeAction } from 'utils'
 import { useDispatch, useSelector } from 'react-redux'
 import { USERS, GROUPS, TODOS } from '../../constants'
+import { path } from 'ramda'
 
 import { Datetime } from 'components/Datetime'
 import {
@@ -23,17 +24,19 @@ const startUpViews = {
   [TODOS]: <Todos.Editor />
 }
 
+const hasListPath = path(['state', 'selectHasList'])
+
 const App = () => {
   const dispatch = useDispatch()
 
-  const hasUsers = useSelector(Users.state.selectHasList)
-  const hasGroups = useSelector(Groups.state.selectHasList)
+  const hasUsers = useSelector(hasListPath(Users))
+  const hasGroups = useSelector(hasListPath(Groups))
 
   const view = useMemo(
     () => hasUsers ? hasGroups ? TODOS : GROUPS : USERS,
     [hasUsers, hasGroups]
   )
-  
+
   const StartUpView = startUpViews[view]
 
   useEffect(() => {
