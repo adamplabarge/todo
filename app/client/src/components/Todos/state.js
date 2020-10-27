@@ -2,12 +2,14 @@ import { createSlice } from '@reduxjs/toolkit'
 import { createSelector } from 'reselect'
 import { prop } from 'ramda'
 
-export const todosSlice = createSlice({
-  name: 'todos',
+const ENTITY = 'todos'
+
+export const state = createSlice({
+  name: ENTITY,
   initialState: {
     loading: false,
-    todos: null,
-    create: null
+    list: null,
+    editor: null
   },
   reducers: {
     create: (state) => ({
@@ -17,7 +19,7 @@ export const todosSlice = createSlice({
     setCreate: (state, action) => ({
       ...state,
       loading: false,
-      create: action.payload
+      editor: action.payload
     }),
     read: (state) => ({
       ...state,
@@ -26,27 +28,27 @@ export const todosSlice = createSlice({
     setRead: (state, action) => ({
       ...state,
       loading: false,
-      todos: action.payload
+      list: action.payload
     }),
   },
 });
 
-const selectState = state => state.todos
+const selectSlice = state => state[ENTITY]
 
 export const selectLoading = createSelector(
-  selectState,
+  selectSlice,
   prop('loading')
 )
 
-export const selectTodos = createSelector(
-  selectState,
-  prop('todos')
+export const selectList = createSelector(
+  selectSlice,
+  prop('list')
 )
 
 export const selectCreate = createSelector(
-  selectState,
-  prop('create')
+  selectSlice,
+  prop('editor')
 )
 
-export const { read, setRead, create, setCreate } = todosSlice.actions;
-export default todosSlice.reducer
+export const { read, setRead, create, setCreate } = state.actions;
+export default state.reducer

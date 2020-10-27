@@ -1,9 +1,9 @@
 import { put, takeLatest, all } from 'redux-saga/effects'
-import * as actions from 'components/Todos/state'
+import * as actions from 'components/Groups/state'
 
-import { API_BASE, TODOS } from '../constants'
+import { API_BASE, GROUPS } from '../constants'
 
-const ENTITY = TODOS
+const ENTITY = GROUPS
 
 function* createEntity() {
   const json = yield fetch(`${API_BASE}/create/${ENTITY}`)

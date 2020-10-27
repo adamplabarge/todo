@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
-import * as slice from './todosSlice'
+import * as slice from './state'
 
 const Editor = ({
   item
