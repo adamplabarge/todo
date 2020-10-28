@@ -85,6 +85,17 @@ export const selectEntity = createSelector(
   } 
 )
 
+export const selectEntityStrict = createSelector(
+  selectList,
+  (_, props) => propOr(null, 'id', props),
+  (list, id) => {
+    if (!list) return null
+    const item = list.find(propEq('id', parseInt(id)))
+    if (item) return item
+    return null
+  } 
+)
+
 export const {
   create,
   read,
@@ -93,6 +104,6 @@ export const {
   createSuccess,
   readSuccess,
   updateSuccess,
-  removeSuccess
+  removeSuccess,
 } = state.actions;
 export default state.reducer

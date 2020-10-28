@@ -2,6 +2,9 @@ import React, { useEffect } from 'react'
 import styled from '@emotion/styled'
 import { createTypeAction } from 'utils'
 import { useDispatch } from 'react-redux'
+import { useCookies } from 'react-cookie'
+import { setUserId } from './state'
+import { prop } from 'ramda'
 
 import { Datetime } from 'components/Datetime'
 import {
@@ -19,10 +22,17 @@ export const startApp = createTypeAction('startApp')
 const App = () => {
   const dispatch = useDispatch()
 
+  const [cookies] = useCookies()
+  const id = prop('user', cookies)
+  
   useEffect(() => {
     dispatch(startApp())
   }, [])
-
+  
+  useEffect(() => {
+    dispatch(setUserId({ id }))
+  }, [id])
+  
   return (
     <Router>
       <AppWrapper>

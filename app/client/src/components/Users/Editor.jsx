@@ -6,26 +6,34 @@ import * as state from './state'
 import { prop, propOr } from 'ramda'
 import styled from '@emotion/styled'
 import { useParams } from 'react-router-dom'
+import { useCookies } from 'react-cookie'
+import { setUserId } from 'components/App/state'
 
 import SketchPicker from 'react-color'
 import { Label, Input } from 'components/Form'
 
 const Editor = () => {
   const { id } = useParams()
+
   const dispatch = useDispatch()
 
   const loading = useSelector(state.selectLoading) 
   const user = useSelector(state.selectEntity, { id })
 
   const [color, setColor] = useState(propOr('#fff', 'icon', user))
-
   const handleColorPicker = ({ hex }) => setColor(hex) 
-
+  const [_, setCookie] = useCookies(['user'])
   const { register, handleSubmit } = useForm()
+  
   const onSubmit = data => dispatch(state.update({
     ...data,
     icon: color
   }))
+
+  const handleSetAsDefault = () => {
+    dispatch(setUserId({ id }))
+    setCookie('user', id, { path: '/' })
+  }
 
   useEffect(() => setColor(propOr(color, 'icon', user)), [user])
 
@@ -34,30 +42,33 @@ const Editor = () => {
       loading && <div>Loading right now, thank you.</div>
     }
     {
-      user && 
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <input name="id" type="hidden" value={prop('id', user)} ref={register} />
-        <Label>
-          <span>Name:</span>
-          <Input
-            name="name"
-            placeholder="enter user name"
-            ref={register}
-            defaultValue={user.name}
-          />
-        </Label>
-        
-        <Label>
-          <span>Icon color:</span>
-          <ColorBox color={color} />
-          <SketchPicker
-            color={color}
-            onChange={handleColorPicker} />
-        </Label>
+      user && <>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <input name="id" type="hidden" value={prop('id', user)} ref={register} />
+          <Label>
+            <span>Name:</span>
+            <Input
+              name="name"
+              placeholder="enter user name"
+              ref={register}
+              defaultValue={user.name}
+            />
+          </Label>
+          
+          <Label>
+            <span>Icon color:</span>
+            <ColorBox color={color} />
+            <SketchPicker
+              color={color}
+              onChange={handleColorPicker} />
+          </Label>
 
-        <input type="submit" value="Save" />
+          <input type="submit" value="Save" />
 
-      </form>
+        </form>
+
+        <button onClick={handleSetAsDefault}>Set as default user</button>
+      </>
     }
   </>
 }

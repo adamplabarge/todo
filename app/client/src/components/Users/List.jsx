@@ -13,7 +13,6 @@ const List = () => {
   const {
     selectLoading,
     selectList,
-    read,
   } = state
 
   const loading = useSelector(selectLoading)
