@@ -52,12 +52,21 @@ function* updateWatcher() {
   yield takeLatest(actions.update.toString(), updateEntity)
 }
 
-function* deleteEntity() {
+function* removeEntity(action) {
+  const { id } = action.payload 
+  const json = yield fetch(
+    `${API_BASE}/${ENTITY}/${id}`,
+    {
+      method: 'DELETE'
+    }
+  )
+  .then(res => res.json())
 
+  yield put({ type: actions.updateSuccess.toString(), payload: json })
 }
 
-function* deleteWatcher() {
-
+function* removeWatcher() {
+  yield takeLatest(actions.remove.toString(), removeEntity)
 }
 
 export default function* sagas() {
@@ -65,6 +74,6 @@ export default function* sagas() {
     createWatcher(),
     readWatcher(),
     updateWatcher(),
-    deleteWatcher()
+    removeWatcher()
   ])
 }

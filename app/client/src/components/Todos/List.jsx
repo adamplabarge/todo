@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import styled from '@emotion/styled'
 import * as state from './state'
-import { length, inc, prop } from 'ramda'
+import { length, inc, prop, curry } from 'ramda'
 import { entityFromPath, capitalizeFirstLetter } from 'utils/utils'
 import { Link, useRouteMatch } from 'react-router-dom'
 import { TODOS } from 'utils/constants'
@@ -31,6 +31,11 @@ const List = () => {
     dispatch(state.create())
   }
 
+  const handleRemove = curry((id, e) => {
+    e.preventDefault()
+    dispatch(state.remove({ id }))
+  })
+
   return (
     <>
       {
@@ -39,12 +44,12 @@ const List = () => {
       <Todos>
         {
           list && list.map((item, index) =>
-            <Todo key={prop('id', item)}>
-              <Link to={`${path}/editor/${prop('id', item)}`}>
+            <Link key={prop('id', item)} to={`${path}/editor/${prop('id', item)}`}>
+              <Todo>
                 {inc(index)}. {prop('title', item)} : (Priority {prop('priority', item)})
-              </Link>
-              <Remove><span>X</span></Remove>
-            </Todo>
+                <Remove onClick={handleRemove(prop('id', item))}><span>X</span></Remove>
+              </Todo>
+            </Link>
           )
         }
       </Todos>
@@ -75,7 +80,7 @@ const Todo = styled.div`
   border-radius: 3em;
   padding: 1em;
   margin: .5em;
-  background: linear-gradient(to bottom left, #000000 0%, #2b2a2a 100%);
+  background: linear-gradient(to top left, #000000 0%, #2b2a2a 100%);
 `
 
 const Remove = styled.div`

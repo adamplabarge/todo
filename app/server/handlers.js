@@ -128,7 +128,7 @@ const handlers = {
               _data.update(entity, 'index', list, (err) => {
                 if (!err) {
                   const sorted = sortAscBy(list, sortByProp[entity])
-                  res.send(list)
+                  res.send(sorted)
                 } else {
                   console.log(err)
                   next(err)
@@ -157,10 +157,11 @@ const handlers = {
           if (id !== -1) {
             const found = getItem(id)(data)
             if (!utils.isUndefined(found)) {
-              const allButItem = getAllOthers(id)(data)
-              _data.update(entity, 'index', [...allButItem], (err) => {
+              const list = getAllOthers(id)(data)
+              _data.update(entity, 'index', [...list], (err) => {
                 if (!err) {
-                  res.send(allButItem)
+                  const sorted = sortAscBy(list, sortByProp[entity])
+                  res.send(sorted)
                 } else {
                   console.log(err)
                   next(err)
