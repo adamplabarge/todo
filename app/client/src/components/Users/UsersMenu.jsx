@@ -16,8 +16,6 @@ const UserMenu = () => {
     propOr('', 'name')
   )(user)
 
-  console.log(firstLetter)
-
   return <>
     <Link to={`/users`}>
       <UserIcon iconColor={propOr('#FFE9BB', 'icon', user)}>
