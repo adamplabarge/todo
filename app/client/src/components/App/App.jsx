@@ -42,13 +42,11 @@ const App = () => {
             <Datetime />
           </HeaderItem>
           <HeaderItem>
-            <Link to="/todos"><span style={{marginRight: '1em'}}>Todos</span></Link>
             <Users.UsersMenu />
           </HeaderItem>
         </AppHeader>
         <AppBody>
-          <Groups.List>
-          </Groups.List>
+          <Groups.Row />
           <Switch>
             <Route path="/users/editor/:id">
               <Users.Editor />
@@ -59,7 +57,7 @@ const App = () => {
             <Route path="/todos/editor/:id">
               <Todos.Editor />
             </Route>
-            <Route path="/todos">
+            <Route path="/todos/:id">
               <Todos.List />
             </Route>
             <Route path="/groups/editor/:id">

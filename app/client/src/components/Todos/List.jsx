@@ -2,17 +2,14 @@ import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import styled from '@emotion/styled'
 import * as state from './state'
-import { length, inc, prop, curry } from 'ramda'
-import { entityFromPath, capitalizeFirstLetter } from 'utils/utils'
-import { Link, useRouteMatch } from 'react-router-dom'
-import { TODOS } from 'utils/constants'
+import { length, inc, prop, curry, propEq, isEmpty } from 'ramda'
+import { Link, useParams } from 'react-router-dom'
 
 import { Footer } from 'components/Layout'
 
 const List = () => {
 
-  const { path } = useRouteMatch()
-  const entityName = entityFromPath(path) || TODOS
+  const { id } = useParams() 
 
   const {
     selectLoading,
@@ -20,7 +17,7 @@ const List = () => {
   } = state
 
   const loading = useSelector(selectLoading)
-  const list = useSelector(selectList)
+  const list = useSelector(selectList) || []
   const dispatch = useDispatch()
 
   const total = length(list)
@@ -36,6 +33,10 @@ const List = () => {
     dispatch(state.remove({ id }))
   })
 
+  const items = id
+    ? list.filter(propEq('group', id))
+    : list
+
   return (
     <>
       {
@@ -43,8 +44,8 @@ const List = () => {
       }
       <Todos>
         {
-          list && list.map((item, index) =>
-            <Link key={prop('id', item)} to={`${path}/editor/${prop('id', item)}`}>
+          items && items.map((item, index) =>
+            <Link key={prop('id', item)} to={`/todos/editor/${prop('id', item)}`}>
               <Todo>
                 {inc(index)}. {prop('title', item)} : (Priority {prop('priority', item)})
                 <Remove onClick={handleRemove(prop('id', item))}><span>X</span></Remove>
@@ -52,11 +53,14 @@ const List = () => {
             </Link>
           )
         }
+        {
+          isEmpty(items) && <h4>No Todo items found...</h4>
+        }
       </Todos>
       <Footer>
-        <Link to={`${path}/editor/${nextId}`} onClick={handleCreate}>
+        <Link to={`/todos/editor/${nextId}`} onClick={handleCreate}>
           <button>
-            {`Create ${capitalizeFirstLetter(entityName)}`}
+            {`Create Todos`}
           </button>
         </Link>
       </Footer>

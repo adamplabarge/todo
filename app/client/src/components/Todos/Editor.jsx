@@ -63,7 +63,7 @@ const Editor = () => {
           </Label>
           <Label>
             <span>Group:</span>
-            <select name="group">
+            <select name="group" ref={register}>
               {
                 groups.map(group => <option value={prop('name', group)}>{prop('name', group)}</option>)
               }
