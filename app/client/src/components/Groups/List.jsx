@@ -69,7 +69,7 @@ const Groups = styled.div`
   border-bottom: 1px solid #27292b;
   -webkit-box-shadow: 0px 3px 8px -3px #27292B; 
   box-shadow: 0px 3px 8px -3px #27292B;
-  margin-bottom: 1em;
+  padding: 1em;
 `
 
 const Items = styled.div`
@@ -79,9 +79,11 @@ justify-content: flex-start;
 `
 
 const Item = styled.div(props => `
-  background-color: ${propOr('#000', 'color', props)};
+  background-color: #2d3436;
+  background: linear-gradient(315deg, ${propOr('#000', 'color', props)} 0%, #000 75%);
   display: inline-block;
-  border: 0.2em solid #fff;
-  border-radius: 0.25em;
+  border: 0.1em solid #fff;
+  border-radius: 3em;
   padding: .5em 1em;
+  margin-right: 0.5em;
 `)

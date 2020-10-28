@@ -33,10 +33,6 @@ const App = () => {
   useEffect(() => {
     dispatch(setUserId({ id }))
   }, [id])
-  
-  const handleCreateGroup = () => {
-
-  }
 
   return (
     <Router>
@@ -97,8 +93,27 @@ const AppWrapper = styled.div`
     text-decoration: none;
   }
 
-  button {
+  button,
+  input[type="submit"] {
     cursor: pointer;
+
+    background-image: linear-gradient(to right, #232526 0%, #414345  51%, #232526  100%);
+    margin: .5em;
+    padding: .5em 1em;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;            
+    border-radius: 1em;
+    display: block;
+    border: solid #fff 0.1em;
+
+    &:hover {
+      background-position: right center; /* change the direction of the change here */
+      color: #fff;
+      text-decoration: none;
+    }        
   }
 `
 
@@ -122,5 +137,4 @@ const HeaderItem = styled.div`
 `
 
 const AppBody = styled.div`
-  padding: 1em;
 `
