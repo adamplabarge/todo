@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'utils/utils'
 import * as state from './state'
-import { prop, propOr, } from 'ramda'
+import { prop } from 'ramda'
 import styled from '@emotion/styled'
 import { useParams } from 'react-router-dom'
 import { selectUserId } from 'components/App/state'
-import SketchPicker from 'react-color'
 
 import { Label, Input } from 'components/Form'
 
@@ -20,17 +19,11 @@ const Editor = () => {
   const group = useSelector(state.selectEntity, { id })
   const userId = useSelector(selectUserId)
 
-  const [color, setColor] = useState(propOr('#fff', 'color', group))
-  const handleColorPicker = ({ hex }) => setColor(hex) 
-
   const { register, handleSubmit } = useForm()
   
   const onSubmit = data => dispatch(state.update({
     ...data,
-    color
   }))
-
-  useEffect(() => setColor(propOr(color, 'color', group)), [group])
 
   const showEditor = !loading && group
 
@@ -52,13 +45,7 @@ const Editor = () => {
               defaultValue={group.name}
             />
           </Label>
-          <Label>
-            <span>Icon color:</span>
-            <ColorBox color={color} />
-            <SketchPicker
-              color={color}
-              onChange={handleColorPicker} />
-          </Label>
+
           <input type="submit" value="Save" />
 
         </form>
