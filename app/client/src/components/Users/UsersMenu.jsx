@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from '@emotion/styled'
-import { useSelector } from 'utils'
+import { useSelector } from 'utils/utils'
 import { selectUserId } from 'components/App/state'
 import { compose, head, split, propOr } from 'ramda'
 import { selectEntityStrict as selectUserStrict } from 'components/Users/state'

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import styled from '@emotion/styled'
-import { createTypeAction } from 'utils'
+import { createTypeAction } from 'utils/utils'
 import { useDispatch } from 'react-redux'
 import { useCookies } from 'react-cookie'
 import { setUserId } from './state'
@@ -11,6 +11,7 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
+  Link
 } from "react-router-dom"
 
 import * as Todos from 'components/Todos'
@@ -33,14 +34,25 @@ const App = () => {
     dispatch(setUserId({ id }))
   }, [id])
   
+  const handleCreateGroup = () => {
+
+  }
+
   return (
     <Router>
       <AppWrapper>
         <AppHeader>
-          <Datetime />
-          <Users.UsersMenu />
+          <HeaderItem>
+            <Datetime />
+          </HeaderItem>
+          <HeaderItem>
+            <Link to="/todos"><span style={{marginRight: '1em'}}>Todos</span></Link>
+            <Users.UsersMenu />
+          </HeaderItem>
         </AppHeader>
         <AppBody>
+          <Groups.List>
+          </Groups.List>
           <Switch>
             <Route path="/users/editor/:id">
               <Users.Editor />
@@ -78,7 +90,16 @@ const AppWrapper = styled.div`
   min-height: 100vh;
 
   color: #fff;
-  background-color: #000;
+  background-color: #1E1E1E;
+
+  a {
+    color: #fff;
+    text-decoration: none;
+  }
+
+  button {
+    cursor: pointer;
+  }
 `
 
 const AppHeader = styled.div`
@@ -86,16 +107,20 @@ const AppHeader = styled.div`
   flex-direction: row;
   justify-content: space-between;
   padding: .5em 1em;
+  background-color: #000;
   border-bottom: 1px solid #27292b;
   -webkit-box-shadow: 0px 3px 8px -3px #27292B; 
   box-shadow: 0px 3px 8px -3px #27292B;
   align-items: center;
 `
 
+const HeaderItem = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+`
+
 const AppBody = styled.div`
   padding: 1em;
-
-  a {
-    color: #fff;
-  }
 `

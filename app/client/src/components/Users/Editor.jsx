@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
-import { useSelector } from 'utils'
+import { useSelector } from 'utils/utils'
 import * as state from './state'
 import { prop, propOr } from 'ramda'
 import styled from '@emotion/styled'
@@ -37,12 +37,14 @@ const Editor = () => {
 
   useEffect(() => setColor(propOr(color, 'icon', user)), [user])
 
+  const showEditor = !loading && user
+
   return <>
     {
       loading && <div>Loading right now, thank you.</div>
     }
     {
-      user && <>
+      showEditor && <>
         <form onSubmit={handleSubmit(onSubmit)}>
           <input name="id" type="hidden" value={prop('id', user)} ref={register} />
           <Label>

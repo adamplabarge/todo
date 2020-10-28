@@ -1,32 +1,77 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
-import * as slice from './state'
+import { useSelector } from 'utils/utils'
+import * as state from './state'
+import { prop} from 'ramda'
+import styled from '@emotion/styled'
+import { useParams } from 'react-router-dom'
+import { selectUserId } from 'components/App/state'
+import { selectList as selectGroups } from 'components/Groups/state'
 
-const Editor = ({
-  item
-}) => {
-  const dispatch = useDispatch()
-  const { register, handleSubmit } = useForm()
-  const onSubmit = data => dispatch()
+import { Label, Input } from 'components/Form'
+
+const priorities = [1,2,3,4,5]
+
+const Editor = () => {
+  const { id } = useParams()
   
+  const dispatch = useDispatch()
+  
+  const loading = useSelector(state.selectLoading) 
+  const todo = useSelector(state.selectEntity, { id })
+  const userId = useSelector(selectUserId)
+  const groups = useSelector(selectGroups)
+
+  const { register, handleSubmit } = useForm()
+  
+  const onSubmit = data => dispatch(state.update({
+    ...data
+  }))
+
+  const showEditor = !loading && todo
+
   return <>
-    <form onSubmit={handleSubmit(onSubmit)}>
+    {
+      loading && <div>Loading right now, thank you.</div>
+    }
+    {
+      showEditor && <>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <input name="id" type="hidden" value={prop('id', todo)} ref={register} />
+          <input name="user" type="hidden" value={userId} ref={register} />
+          <Label>
+            <span>Title:</span>
+            <Input
+              name="title"
+              placeholder="enter todo"
+              ref={register}
+              defaultValue={todo.title}
+            />
+          </Label>
+          <Label>
+            <span>Group:</span>
+            <select name="group">
+              {
+                groups.map(group => <option value={prop('name', group)}>{prop('name', group)}</option>)
+              }
+            </select>
+          </Label>
+          <Label>
+            <span>Priority:</span>
+            <select name="priority" ref={register}>
+              {
+                priorities.map(priority => <option value={priority}>{priority}</option>)
+              }
+            </select>
+          </Label>
 
-      <input name="title" defaultValue="enter the task..." ref={register} />
+          <input type="submit" value="Save" />
 
-      
-    </form>
+        </form>
+      </>
+    }
   </>
-}
-
-Editor.defaultProps = {
-  item: {}
-}
-
-Editor.propTypes = {
-  item: PropTypes.object
 }
 
 export default Editor

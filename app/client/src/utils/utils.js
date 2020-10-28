@@ -1,6 +1,6 @@
 import { createAction as createActionRedux } from '@reduxjs/toolkit'
 import { useSelector as reactReduxUseSelector } from 'react-redux'
-import { curry } from 'ramda'
+import { curry, head } from 'ramda'
 
 /** Actions */
 export const createAction = curry((type, args) => createActionRedux(type, () => ({
@@ -16,3 +16,9 @@ export const useSelector = (selector, props) => reactReduxUseSelector(state => s
 
 /** Types */
 export const isNull = value => value === null
+
+/** Strings */
+export const capitalizeFirstLetter = name => name.charAt(0).toUpperCase() + name.slice(1)
+
+/** others */
+export const entityFromPath = path => head(path.split('/').slice(1))

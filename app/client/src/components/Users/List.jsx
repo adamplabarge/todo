@@ -1,14 +1,14 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import * as state from './state'
-import { isNull } from 'utils'
-import { length, inc } from 'ramda'
-
+import { length, inc, prop } from 'ramda'
+import { entityFromPath, capitalizeFirstLetter } from 'utils/utils'
 import { Link, useRouteMatch } from 'react-router-dom'
 
 const List = () => {
 
   const { path } = useRouteMatch()
+  const entityName = entityFromPath(path)
 
   const {
     selectLoading,
@@ -23,7 +23,7 @@ const List = () => {
   // this is not ideal, server should return the id and update history?
   const nextId = total === 0 ? 1 : inc(total)
 
-  const handleCreateUser = () => {
+  const handleCreate = () => {
     dispatch(state.create())
   }
 
@@ -33,15 +33,19 @@ const List = () => {
         loading && <div>We are loading something...</div>
       }
       {
-        list && list.map(user =>
-          <div key={user.id}>
-            <Link to={`${path}/editor/${user.id}`}>
-              {user.name} : {user.id}
+        list && list.map(item =>
+          <div key={prop('id', item)}>
+            <Link to={`${path}/editor/${prop('id', item)}`}>
+              {prop('name', item)} : {prop('id', item)}
             </Link>
           </div>
         )
       }
-      <Link to={`${path}/editor/${nextId}`} onClick={handleCreateUser}><button>Create User</button></Link>
+      <Link to={`${path}/editor/${nextId}`} onClick={handleCreate}>
+        <button>
+          {`Create ${capitalizeFirstLetter(entityName)}`}
+        </button>
+      </Link>
     </>
   )
 }
