@@ -94,6 +94,6 @@ const Remove = styled.div`
   }
 
   &:hover {
-    background-color: #500000;
+    background-color: #EB3349;
   }
 `

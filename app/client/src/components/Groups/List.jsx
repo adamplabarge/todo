@@ -41,7 +41,7 @@ const List = () => {
       <Items>
         {
           list && list.map(item =>
-            <Item key={prop('id', item)} color={prop('color', item)}>
+            <Item key={prop('id', item)}>
               <Link to={`${entityBasePath}/editor/${prop('id', item)}`}>
                 {groupDisplayName(item)}
               </Link>
@@ -69,21 +69,35 @@ const Groups = styled.div`
   border-bottom: 1px solid #27292b;
   -webkit-box-shadow: 0px 3px 8px -3px #27292B; 
   box-shadow: 0px 3px 8px -3px #27292B;
-  padding: 1em;
+  padding: .5em;
 `
 
 const Items = styled.div`
-display: flex;
-flex-direction: row;
-justify-content: flex-start;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
 `
 
-const Item = styled.div(props => `
-  background-color: #2d3436;
-  background: linear-gradient(315deg, ${propOr('#000', 'color', props)} 0%, #000 75%);
-  display: inline-block;
-  border: 0.1em solid #fff;
-  border-radius: 3em;
+const Item = styled.div(`
+  cursor: pointer;
+
+  background-image: linear-gradient(to right, rgba(31, 162, 255, .8) 0%, #12D8FA  51%, rgba(31, 162, 255, .5)  100%);
+
+  margin: .5em;
   padding: .5em 1em;
-  margin-right: 0.5em;
+  text-align: center;
+  text-transform: uppercase;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;
+  font-weight: bold;            
+  border-radius: 1em;
+  display: block;
+  border: none;
+
+  &:hover {
+    background-position: right center; /* change the direction of the change here */
+    color: #fff;
+    text-decoration: none;
+  }
 `)

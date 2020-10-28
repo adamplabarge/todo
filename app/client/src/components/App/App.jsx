@@ -97,25 +97,29 @@ const AppWrapper = styled.div`
   input[type="submit"] {
     cursor: pointer;
 
-    background-image: linear-gradient(to right, #232526 0%, #414345  51%, #232526  100%);
+    background-image: linear-gradient(to right, #EB3349 0%, #F45C43  51%, #EB3349  100%);
+    
     margin: .5em;
-    padding: .5em 1em;
+    padding: 1em;
     text-align: center;
     text-transform: uppercase;
     transition: 0.5s;
     background-size: 200% auto;
-    color: white;            
+    color: white;
+    font-weight: bold;            
     border-radius: 1em;
     display: block;
-    border: solid #fff 0.1em;
+    border: none;
 
     &:hover {
       background-position: right center; /* change the direction of the change here */
       color: #fff;
       text-decoration: none;
-    }        
+    }
+    
   }
 `
+
 
 const AppHeader = styled.div`
   display: flex;
