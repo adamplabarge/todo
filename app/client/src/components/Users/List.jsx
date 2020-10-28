@@ -21,6 +21,7 @@ const List = () => {
   const dispatch = useDispatch()
 
   const total = length(list)
+  // this is not ideal, server should return the id and update history?
   const nextId = total === 0 ? 1 : inc(total)
 
   const handleCreateUser = () => {
