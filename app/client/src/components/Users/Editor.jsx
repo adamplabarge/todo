@@ -10,7 +10,7 @@ import { useCookies } from 'react-cookie'
 import { setUserId } from 'components/App/state'
 
 import SketchPicker from 'react-color'
-import { Label, Input } from 'components/Form'
+import { Form, FormFooter, Label, Input } from 'components/Form'
 
 const Editor = () => {
   const { id } = useParams()
@@ -55,7 +55,7 @@ const Editor = () => {
     }
     {
       showEditor && <>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <Form onSubmit={handleSubmit(onSubmit)}>
           <input name="id" type="hidden" value={prop('id', user)} ref={register} />
           <Label>
             <span>Name:</span>
@@ -75,11 +75,15 @@ const Editor = () => {
               onChange={handleColorPicker} />
           </Label>
 
-          <input type="submit" value="Save" />
+          <FormFooter>
+            <input type="submit" value="Save" />
+            <br />
+            <button onClick={handleSetAsDefault}>Set as default user</button>
+          </FormFooter>
 
-        </form>
+        </Form>
 
-        <button onClick={handleSetAsDefault}>Set as default user</button>
+        
       </>
     }
   </>

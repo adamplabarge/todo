@@ -8,7 +8,7 @@ import styled from '@emotion/styled'
 import { useParams } from 'react-router-dom'
 import { selectUserId } from 'components/App/state'
 
-import { Label, Input } from 'components/Form'
+import { Form, FormFooter, Label, Input } from 'components/Form'
 
 const Editor = () => {
   const { id } = useParams()
@@ -43,7 +43,8 @@ const Editor = () => {
     }
     {
       showEditor && <>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <Form onSubmit={handleSubmit(onSubmit)}>
+          <h2 style={{marginTop: 0}}>Create Group</h2>
           <input name="id" type="hidden" value={prop('id', group)} ref={register} />
           <input name="user" type="hidden" value={userId} ref={register} />
           <Label>
@@ -52,23 +53,18 @@ const Editor = () => {
               name="name"
               placeholder="enter group name"
               ref={register}
-              defaultValue={group.name}
-              value={group.name}
+              defaultValue={propOr('', 'name', group)}
             />
           </Label>
 
-          <input type="submit" value="Save" />
+          <FormFooter>
+            <input type="submit" value="Save" />
+          </FormFooter>
 
-        </form>
+        </Form>
       </>
     }
   </>
 }
 
 export default Editor
-
-const ColorBox = styled.div(props => `
-  height: 2em;
-  width: 2em;
-  background-color: ${props.color};
-`)

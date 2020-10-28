@@ -99,7 +99,6 @@ const AppWrapper = styled.div`
 
     background-image: linear-gradient(to right, #EB3349 0%, #F45C43  51%, #EB3349  100%);
     
-    margin: .5em;
     padding: 1em;
     text-align: center;
     text-transform: uppercase;

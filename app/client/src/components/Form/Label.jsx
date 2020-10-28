@@ -2,9 +2,10 @@ import styled from '@emotion/styled'
 
 const Label = styled.label`
   display: block;
+  margin-bottom: .5em;
   
   span {
-    margin: 0 .5em 0 0;
+    margin-right: 1em;
   }
 `
 

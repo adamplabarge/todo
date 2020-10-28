@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import styled from '@emotion/styled'
 import * as state from './state'
-import { length, inc, prop, propOr, isEmpty } from 'ramda'
+import { length, inc, prop, complement, isEmpty } from 'ramda'
 import { capitalizeFirstLetter } from 'utils/utils'
 import { Link, useRouteMatch } from 'react-router-dom'
 import { GROUPS } from 'utils/constants'
@@ -40,7 +40,9 @@ const List = () => {
       }
       <Items>
         {
-          list && list.map(item =>
+          list && list
+            .filter(item => !isEmpty(prop('name', item)))
+            .map(item =>
             <Link key={prop('id', item)} to={`${entityBasePath}/editor/${prop('id', item)}`}>
               <Item>
                 {groupDisplayName(item)}

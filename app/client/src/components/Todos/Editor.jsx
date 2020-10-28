@@ -9,7 +9,7 @@ import { useParams } from 'react-router-dom'
 import { selectUserId } from 'components/App/state'
 import { selectList as selectGroups } from 'components/Groups/state'
 
-import { Label, Input } from 'components/Form'
+import { Form, FormFooter, Label, Input } from 'components/Form'
 
 const priorities = [1,2,3,4,5]
 
@@ -49,7 +49,7 @@ const Editor = () => {
     }
     {
       showEditor && <>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <Form onSubmit={handleSubmit(onSubmit)}>
           <input name="id" type="hidden" value={prop('id', todo)} ref={register} />
           <input name="user" type="hidden" value={userId} ref={register} />
           <Label>
@@ -77,10 +77,12 @@ const Editor = () => {
               }
             </select>
           </Label>
+          
+          <FormFooter>
+            <input type="submit" value="Save" />
+          </FormFooter>
 
-          <input type="submit" value="Save" />
-
-        </form>
+        </Form>
       </>
     }
   </>
