@@ -1,29 +1,23 @@
 import React, { useEffect, useState } from 'react'
-import PropTypes from 'prop-types'
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'utils'
 import * as state from './state'
 import { prop, propOr } from 'ramda'
 import styled from '@emotion/styled'
+import { useParams } from 'react-router-dom'
 
 import SketchPicker from 'react-color'
 import { Label, Input } from 'components/Form'
 
-const Editor = ({
-  id
-}) => {
+const Editor = () => {
+  const { id } = useParams()
   const dispatch = useDispatch()
 
-  const userSelector = id ? state.selectUser : state.selectEditor 
-
   const loading = useSelector(state.selectLoading) 
-  const user = useSelector(userSelector)
+  const user = useSelector(state.selectEntity, { id })
+
   const [color, setColor] = useState(propOr('#fff', 'icon', user))
-console.log(user)
-  const handleCreateUser = () => {
-    dispatch(state.create())
-  }
 
   const handleColorPicker = ({ hex }) => setColor(hex) 
 
@@ -33,11 +27,7 @@ console.log(user)
     icon: color
   }))
 
-  useEffect(() => {
-    if (user) {
-      setColor(prop('icon', user))
-    }
-  }, [user])
+  useEffect(() => setColor(propOr(color, 'icon', user)), [user])
 
   return <>
     {
@@ -53,6 +43,7 @@ console.log(user)
             name="name"
             placeholder="enter user name"
             ref={register}
+            defaultValue={user.name}
           />
         </Label>
         
@@ -69,14 +60,6 @@ console.log(user)
       </form>
     }
   </>
-}
-
-Editor.defaultProps = {
-  id: null
-}
-
-Editor.propTypes = {
-  item: PropTypes.object
 }
 
 export default Editor

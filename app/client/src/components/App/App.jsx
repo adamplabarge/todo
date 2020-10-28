@@ -32,19 +32,19 @@ const App = () => {
         </AppHeader>
         <AppBody>
           <Switch>
-            <Route path="/users/editor">
+            <Route path="/users/editor/:id">
               <Users.Editor />
             </Route>
             <Route path="/users">
               <Users.List />
             </Route>
-            <Route path="/todos/editor">
+            <Route path="/todos/editor/:id">
               <Todos.Editor />
             </Route>
             <Route path="/todos">
               <Todos.List />
             </Route>
-            <Route path="/groups/editor">
+            <Route path="/groups/editor/:id">
               <Groups.Editor />
             </Route>
             <Route path="/groups">
@@ -84,4 +84,8 @@ const AppHeader = styled.div`
 
 const AppBody = styled.div`
   padding: 1em;
+
+  a {
+    color: #fff;
+  }
 `

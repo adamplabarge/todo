@@ -9,31 +9,46 @@ export const state = createSlice({
   initialState: {
     loading: false,
     list: null,
-    editor: null
   },
   reducers: {
+    loading: (state) => ({
+      ...state,
+      loading: true
+    }),
     create: (state) => ({
-      ...state,
-      loading: true,
-    }),
-    setCreate: (state, action) => ({
-      ...state,
-      loading: false,
-      editor: action.payload
-    }),
-    update: (state) => ({
       ...state,
       loading: true,
     }),
     read: (state) => ({
       ...state,
+      loading: true,
+    }),
+    update: (state) => ({
+      ...state,
+      loading: true,
+    }),
+    remove: (state) => ({
+      ...state,
       loading: true
     }),
-    setRead: (state, action) => ({
+    createSuccess: (state, action) => ({
       ...state,
       loading: false,
-      list: action.payload
+      list: propOr([], 'payload', action)
     }),
+    readSuccess: (state, action) => ({
+      ...state,
+      loading: false,
+      list: propOr([], 'payload', action)
+    }),
+    updateSuccess: (state, action) => ({
+      ...state,
+      loading: false,
+      list: propOr([], 'payload', action)
+    }),
+    removeSuccess: (state, action) => ({
+      ...state
+    })
   },
 });
 
@@ -59,16 +74,25 @@ export const selectEditor = createSelector(
   prop('editor')
 )
 
-export const selectUser = createSelector(
+export const selectEntity = createSelector(
   selectList,
   (_, props) => propOr(null, 'id', props),
   (list, id) => {
     if (!list) return null
-    const item = list.find(propEq('id', id))
+    const item = list.find(propEq('id', parseInt(id)))
     if (item) return item
     return head(list)
   } 
 )
 
-export const { read, setRead, create, setCreate, update } = state.actions;
+export const {
+  create,
+  read,
+  update,
+  remove,
+  createSuccess,
+  readSuccess,
+  updateSuccess,
+  removeSuccess
+} = state.actions;
 export default state.reducer

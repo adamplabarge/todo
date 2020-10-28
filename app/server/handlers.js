@@ -20,6 +20,12 @@ const entityDefaults = {
 const getItem = R.curry((id, list) => R.find(R.propEq('id', id))(list))
 const getAllOthers = R.curry((id, list) => R.filter(R.complement(R.propEq('id', id)))(list))
 
+const sortByIdASC = list => list.sort((a, b) => {
+  if (a.id < b.id) return -1
+  if (a.id > b.id) return 1
+  return 0
+})
+
 const handlers = {
   get: R.curry((entity, req, res, next) => {
     try {
@@ -35,7 +41,7 @@ const handlers = {
             }
           }
           else {
-            res.send(data)
+            res.send(sortByIdASC(data))
           }
         }
         if (err) {
@@ -60,7 +66,7 @@ const handlers = {
               }
               _data.update(entity, 'index', [item], (err) => {
                 if (!err) {
-                  res.send(item)
+                  res.send([...data, item])
                 } else {
                   console.log(err)
                   next(err)
@@ -75,7 +81,7 @@ const handlers = {
               }
               _data.update(entity, 'index', [...data, item], (err) => {
                 if (!err) {
-                  res.send(item)
+                  res.send([...data, item])
                 } else {
                   console.log(err)
                   next(err)
@@ -98,17 +104,21 @@ const handlers = {
       _data.read(entity, 'index', (err, data) => {
         if (!err && data) {
           const id = utils.getId(req)
+          
           if (id !== -1) {
             const found = getItem(id)(data)
             if (!utils.isUndefined(found)) {
+              const body = R.propOr({}, 'body', req)
               const item = {
                 ...found,
-                ...R.propOr({}, 'body', req)
+                ...body,
+                id: parseInt(R.prop('id', body))
               }
               const allButItem = getAllOthers(id)(data)
-              _data.update(entity, 'index', [...allButItem, item], (err) => {
+              const list = [...allButItem, item]
+              _data.update(entity, 'index', list, (err) => {
                 if (!err) {
-                  res.send(item)
+                  res.send(list)
                 } else {
                   console.log(err)
                   next(err)

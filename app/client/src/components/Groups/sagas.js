@@ -1,15 +1,15 @@
 import { put, takeLatest, all } from 'redux-saga/effects'
-import * as actions from 'components/Todos/state'
+import * as actions from 'components/Groups/state'
 
-import { API_BASE, TODOS } from '../constants'
+import { API_BASE, GROUPS } from 'utils/constants'
 
-const ENTITY = TODOS
+const ENTITY = GROUPS
 
 function* createEntity() {
   const json = yield fetch(`${API_BASE}/create/${ENTITY}`)
     .then(res => res.json())
 
-  yield put({ type: actions.setCreate.toString(), payload: json })
+  yield put({ type: actions.createSuccess.toString(), payload: json })
 }
 
 function* createWatcher() {
@@ -20,7 +20,7 @@ function* readEntity() {
   const json = yield fetch(`${API_BASE}/${ENTITY}`)
     .then(res => res.json())
 
-  yield put({ type: actions.setRead.toString(), payload: json })
+  yield put({ type: actions.readSuccess.toString(), payload: json })
 
 }
 

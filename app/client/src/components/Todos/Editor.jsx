@@ -9,7 +9,7 @@ const Editor = ({
 }) => {
   const dispatch = useDispatch()
   const { register, handleSubmit } = useForm()
-  const onSubmit = data => dispatch(slice.setCreate(data))
+  const onSubmit = data => dispatch()
   
   return <>
     <form onSubmit={handleSubmit(onSubmit)}>

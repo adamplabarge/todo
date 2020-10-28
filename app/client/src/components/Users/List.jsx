@@ -2,6 +2,7 @@ import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import * as state from './state'
 import { isNull } from 'utils'
+import { length, inc } from 'ramda'
 
 import { Link, useRouteMatch } from 'react-router-dom'
 
@@ -19,21 +20,28 @@ const List = () => {
   const list = useSelector(selectList)
   const dispatch = useDispatch()
 
-  if (isNull(list) && !loading) {
-    dispatch(read())
-  }
+  const total = length(list)
+  const nextId = total === 0 ? 1 : inc(total)
 
   const handleCreateUser = () => {
     dispatch(state.create())
   }
-
 
   return (
     <>
       {
         loading && <div>We are loading something...</div>
       }
-      <Link to={`${path}/editor`} onClick={handleCreateUser}><button>Create User</button></Link>
+      {
+        list && list.map(user =>
+          <div key={user.id}>
+            <Link to={`${path}/editor/${user.id}`}>
+              {user.name} : {user.id}
+            </Link>
+          </div>
+        )
+      }
+      <Link to={`${path}/editor/${nextId}`} onClick={handleCreateUser}><button>Create User</button></Link>
     </>
   )
 }
