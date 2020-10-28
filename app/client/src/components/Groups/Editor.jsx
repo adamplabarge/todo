@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'utils/utils'
 import * as state from './state'
-import { prop } from 'ramda'
+import { prop, propOr } from 'ramda'
 import styled from '@emotion/styled'
 import { useParams } from 'react-router-dom'
 import { selectUserId } from 'components/App/state'
@@ -19,11 +19,21 @@ const Editor = () => {
   const group = useSelector(state.selectEntity, { id })
   const userId = useSelector(selectUserId)
 
-  const { register, handleSubmit } = useForm()
+  const { register, handleSubmit, reset } = useForm()
   
   const onSubmit = data => dispatch(state.update({
     ...data,
   }))
+
+  useEffect(() => {
+    if (group) {
+      reset([
+        {
+          name: propOr('', 'name', group)
+        }
+      ])
+    }
+  }, [group])
 
   const showEditor = !loading && group
 
@@ -43,6 +53,7 @@ const Editor = () => {
               placeholder="enter group name"
               ref={register}
               defaultValue={group.name}
+              value={group.name}
             />
           </Label>
 

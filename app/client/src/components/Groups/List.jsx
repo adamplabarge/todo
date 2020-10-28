@@ -41,11 +41,11 @@ const List = () => {
       <Items>
         {
           list && list.map(item =>
-            <Item key={prop('id', item)}>
-              <Link to={`${entityBasePath}/editor/${prop('id', item)}`}>
+            <Link key={prop('id', item)} to={`${entityBasePath}/editor/${prop('id', item)}`}>
+              <Item>
                 {groupDisplayName(item)}
-              </Link>
-            </Item>
+              </Item>
+            </Link>
           )
         }
       </Items>

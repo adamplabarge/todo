@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'utils/utils'
 import * as state from './state'
-import { prop} from 'ramda'
+import { prop, propOr, head } from 'ramda'
 import styled from '@emotion/styled'
 import { useParams } from 'react-router-dom'
 import { selectUserId } from 'components/App/state'
@@ -23,11 +23,23 @@ const Editor = () => {
   const userId = useSelector(selectUserId)
   const groups = useSelector(selectGroups)
 
-  const { register, handleSubmit } = useForm()
+  const { register, handleSubmit,reset } = useForm()
   
   const onSubmit = data => dispatch(state.update({
     ...data
   }))
+
+  useEffect(() => {
+    if (todo) {
+      reset([
+        {
+          title: propOr('', 'title', todo),
+          group: prop('name', head(todo)),
+          priority: 1
+        }
+      ])
+    }
+  }, [todo])
 
   const showEditor = !loading && todo
 

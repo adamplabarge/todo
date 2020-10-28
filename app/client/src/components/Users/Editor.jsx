@@ -23,7 +23,7 @@ const Editor = () => {
   const [color, setColor] = useState(propOr('#fff', 'icon', user))
   const handleColorPicker = ({ hex }) => setColor(hex) 
   const [_, setCookie] = useCookies(['user'])
-  const { register, handleSubmit } = useForm()
+  const { register, handleSubmit, reset } = useForm()
   
   const onSubmit = data => dispatch(state.update({
     ...data,
@@ -36,6 +36,16 @@ const Editor = () => {
   }
 
   useEffect(() => setColor(propOr(color, 'icon', user)), [user])
+
+  useEffect(() => {
+    if (user) {
+      reset([
+        {
+          name: propOr('', 'name', user),
+        }
+      ])
+    }
+  }, [user])
 
   const showEditor = !loading && user
 
