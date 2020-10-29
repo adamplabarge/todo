@@ -38,7 +38,7 @@ const List = () => {
   })
 
   const items = id
-    ? list.filter(propEq('group', id))
+    ? list.filter(propEq('group', parseInt(id)))
     : list
 
   const canAdd = hasUsers && hasGroups
@@ -78,7 +78,7 @@ export default List
 
 const Todos = styled.div`
   background-color: #000000;
-  padding: 1em ;
+  padding: 1em 0em;
 `
 
 const Todo = styled.div`
@@ -98,13 +98,17 @@ const Remove = styled.div`
   background-color: #000;
   border-radius: 50%;
   border: solid white 0.1em;
+  min-width: 1.5em;
+  min-height: 1.5em;
   width: 1.5em;
   height: 1.5em;
+  max-width: 1.5em;
+  max-height: 1.5em;
   cursor: pointer;
 
   span {
     position: relative;
-    left: 0.35em;
+    left: 0.34em;
     bottom: 0.13em;
   }
 

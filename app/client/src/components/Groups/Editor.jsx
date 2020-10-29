@@ -44,7 +44,7 @@ const Editor = () => {
     {
       showEditor && <>
         <Form onSubmit={handleSubmit(onSubmit)}>
-          <h2 style={{marginTop: 0}}>Edit Group: {propOr('unnamed', 'name', group)}</h2>
+          <h2 style={{marginTop: 0}}>Edit Group: {propOr('', 'name', group)}</h2>
           <input name="id" type="hidden" value={prop('id', group)} ref={register} />
           <input name="user" type="hidden" value={userId} ref={register} />
           <Label>

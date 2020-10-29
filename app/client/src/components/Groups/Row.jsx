@@ -89,6 +89,7 @@ export default withRouter(Row)
 const Groups = styled.div`
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   padding-bottom: 1em;
@@ -146,23 +147,3 @@ const GroupName = styled.div(props => `
     text-decoration: none;
   }
 `)
-
-const Remove = styled.div`
-  display: inline-block;
-  background-color: #000;
-  border-radius: 50%;
-  border: solid white 0.1em;
-  width: 1.5em;
-  height: 1.5em;
-  cursor: pointer;
-
-  span {
-    position: relative;
-    left: 0.35em;
-    bottom: 0.13em;
-  }
-
-  &:hover {
-    background-color: #EB3349;
-  }
-`

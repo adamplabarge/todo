@@ -10,6 +10,7 @@ import { selectUserId } from 'components/App/state'
 import { selectList as selectGroups } from 'components/Groups/state'
 
 import { Form, FormFooter, Label, Input } from 'components/Form'
+import { Footer } from 'components/Layout'
 
 const priorities = [1,2,3,4,5]
 
@@ -26,15 +27,21 @@ const Editor = () => {
   const { register, handleSubmit,reset } = useForm()
   
   const onSubmit = data => dispatch(state.update({
-    ...data
+    ...data,
+    group: parseInt(prop('group', data)),
+    user: parseInt(prop('user', data)),
   }))
+
+  const handleCreate = () => {
+    dispatch(state.create())
+  }
 
   useEffect(() => {
     if (todo) {
       reset([
         {
           title: propOr('', 'title', todo),
-          group: prop('name', head(todo)),
+          group: prop('group', todo),
           priority: 1
         }
       ])
@@ -64,9 +71,9 @@ const Editor = () => {
           </Label>
           <Label>
             <span>Group:</span>
-            <select name="group" ref={register}>
+            <select name="group" ref={register} defaultValue={prop('group', todo)}>
               {
-                groups.map(group => <option value={prop('name', group)}>{prop('name', group)}</option>)
+                groups.map(group => <option value={prop('id', group)}>{prop('name', group)}</option>)
               }
             </select>
           </Label>
@@ -84,6 +91,12 @@ const Editor = () => {
           </FormFooter>
 
         </Form>
+        <Footer>
+          <button
+            onClick={handleCreate}>
+            {`Create Todos`}
+          </button>
+        </Footer>
       </>
     }
   </>
