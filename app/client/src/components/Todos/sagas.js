@@ -12,7 +12,7 @@ function* createEntity() {
     .then(res => res.json())
 
 
-  yield call(history.push, `/todos/editor/${prop('id', json)}`)
+  yield call(history.push, `/${ENTITY}/editor/${prop('id', json)}`)
   yield put({ type: actions.createSuccess.toString(), payload: json })
 }
 
