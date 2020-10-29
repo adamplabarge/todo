@@ -8,7 +8,7 @@ export const state = createSlice({
   name: ENTITY,
   initialState: {
     loading: false,
-    list: null,
+    list: [],
   },
   reducers: {
     loading: (state) => ({
@@ -34,7 +34,10 @@ export const state = createSlice({
     createSuccess: (state, action) => ({
       ...state,
       loading: false,
-      list: propOr([], 'payload', action)
+      list: [
+        ...state.list,
+        propOr([], 'payload', action)
+      ]
     }),
     readSuccess: (state, action) => ({
       ...state,
@@ -78,6 +81,7 @@ export const selectEntity = createSelector(
   selectList,
   (_, props) => propOr(null, 'id', props),
   (list, id) => {
+    console.log(list)
     if (!list) return null
     const item = list.find(propEq('id', parseInt(id)))
     if (item) return item
@@ -89,6 +93,7 @@ export const selectEntityStrict = createSelector(
   selectList,
   (_, props) => propOr(null, 'id', props),
   (list, id) => {
+    console.log(list)
     if (!list) return null
     const item = list.find(propEq('id', parseInt(id)))
     if (item) return item

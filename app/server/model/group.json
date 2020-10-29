@@ -1,7 +1,6 @@
 {
   "id": 0,
   "name": "",
-  "users": [],
-  "priority": 0,
-  "color": ""
+  "user": 0,
+  "priority": 0
 }

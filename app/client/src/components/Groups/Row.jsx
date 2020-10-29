@@ -58,11 +58,9 @@ const Row = ({
           <Actions>
             <AllGroupsLink to="/todos"><span style={{marginRight: '1em'}}>All Todos</span></AllGroupsLink>
             <AllGroupsLink to="/groups">All Groups</AllGroupsLink>
-            <Link to={`${entityBasePath}/todos/${nextId}`} onClick={handleCreate}>
-              <button>
-                {`Create ${capitalizeFirstLetter(entityName)}`}
-              </button>
-            </Link>
+            <button onClick={handleCreate}>
+              {`Create ${capitalizeFirstLetter(entityName)}`}
+            </button>
           </Actions>
         </>
       }

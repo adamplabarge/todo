@@ -8,7 +8,7 @@ export const state = createSlice({
   name: ENTITY,
   initialState: {
     loading: false,
-    list: null,
+    list: [],
   },
   reducers: {
     loading: (state) => ({
@@ -34,7 +34,10 @@ export const state = createSlice({
     createSuccess: (state, action) => ({
       ...state,
       loading: false,
-      list: propOr([], 'payload', action)
+      list: [
+        ...state.list,
+        propOr([], 'payload', action)
+      ]
     }),
     readSuccess: (state, action) => ({
       ...state,

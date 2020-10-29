@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { createSelector } from 'reselect'
-import { prop, isEmpty, complement, head, propEq, propOr } from 'ramda'
+import { prop, isEmpty, complement, head, propEq, propOr, filter } from 'ramda'
 
 const ENTITY = 'todos'
 
@@ -8,7 +8,7 @@ export const state = createSlice({
   name: ENTITY,
   initialState: {
     loading: false,
-    list: null,
+    list: [],
   },
   reducers: {
     loading: (state) => ({
@@ -34,7 +34,10 @@ export const state = createSlice({
     createSuccess: (state, action) => ({
       ...state,
       loading: false,
-      list: propOr([], 'payload', action)
+      list: [
+        ...state.list,
+        propOr([], 'payload', action)
+      ]
     }),
     readSuccess: (state, action) => ({
       ...state,
@@ -62,6 +65,11 @@ export const selectLoading = createSelector(
 export const selectList = createSelector(
   selectSlice,
   prop('list')
+)
+
+export const selectUncompletedList = createSelector(
+  selectList,
+  filter(propEq('complete', false))
 )
 
 export const selectHasList = createSelector(

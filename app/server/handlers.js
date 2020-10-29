@@ -20,7 +20,7 @@ const entityDefaults = {
 const getItem = R.curry((id, list) => R.find(R.propEq('id', id))(list))
 const getAllOthers = R.curry((id, list) => R.filter(R.complement(R.propEq('id', id)))(list))
 
-const sortAscBy = (list, prop) => list.sort((a, b) => {
+const sortAscBy = (prop, list) => list.sort((a, b) => {
   if (R.prop(prop, a) < R.prop(prop, b)) return -1
   if (R.prop(prop, a) > R.prop(prop, b)) return 1
   return 0
@@ -47,7 +47,7 @@ const handlers = {
             }
           }
           else {
-            const sorted = sortAscBy(data, sortByProp[entity])
+            const sorted = sortAscBy(sortByProp[entity], data)
             res.send(sorted)
           }
         }
@@ -73,7 +73,7 @@ const handlers = {
               }
               _data.update(entity, 'index', [item], (err) => {
                 if (!err) {
-                  res.send([item])
+                  res.send(item)
                 } else {
                   console.log(err)
                   next(err)
@@ -81,16 +81,16 @@ const handlers = {
               })
             }
             else {
-              const total = R.length(data)
+              const id = R.inc(parseInt(R.prop('id', R.last(sortAscBy(entity, data)))))
+              console.log(id)
               const item = {
                 ...entityDefaults[entity],
-                id: R.inc(total)
+                id: id
               }
               const list = [...data, item]
               _data.update(entity, 'index', list, (err) => {
                 if (!err) {
-                  const sorted = sortAscBy(list, sortByProp[entity])
-                  res.send(sorted)
+                  res.send(item)
                 } else {
                   console.log(err)
                   next(err)
@@ -127,7 +127,7 @@ const handlers = {
               const list = [...allButItem, item]
               _data.update(entity, 'index', list, (err) => {
                 if (!err) {
-                  const sorted = sortAscBy(list, sortByProp[entity])
+                  const sorted = sortAscBy(sortByProp[entity], list)
                   res.send(sorted)
                 } else {
                   console.log(err)

@@ -2,16 +2,23 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
 import App from './components/App'
-import store from './store'
+import store, { history } from './store'
 import { Provider } from 'react-redux'
 import { CookiesProvider } from 'react-cookie'
 import * as serviceWorker from './serviceWorker'
 
+import {
+  Router,
+} from "react-router-dom"
+
+
 ReactDOM.render(
   <React.StrictMode>
     <CookiesProvider>
-      <Provider store={store()}>
-        <App />
+      <Provider store={store}>
+        <Router history={history}>
+          <App />
+        </Router>
       </Provider>
     </CookiesProvider>
   </React.StrictMode>,

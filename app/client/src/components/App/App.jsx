@@ -8,10 +8,8 @@ import { prop } from 'ramda'
 
 import { Datetime } from 'components/Datetime'
 import {
-  BrowserRouter as Router,
   Switch,
   Route,
-  Link
 } from "react-router-dom"
 
 import * as Todos from 'components/Todos'
@@ -35,7 +33,7 @@ const App = () => {
   }, [id])
 
   return (
-    <Router>
+    <>
       <AppWrapper>
         <AppHeader>
           <HeaderItem>
@@ -72,7 +70,7 @@ const App = () => {
           </Switch>
         </AppBody>
       </AppWrapper>
-    </Router>
+    </>
   )
 }
 

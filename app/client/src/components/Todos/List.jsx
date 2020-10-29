@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import styled from '@emotion/styled'
 import * as state from './state'
-import { length, inc, prop, curry, propEq, isEmpty } from 'ramda'
+import { inc, prop, curry, propEq, isEmpty } from 'ramda'
 import { Link, useParams } from 'react-router-dom'
 
 import { Footer } from 'components/Layout'
@@ -13,16 +13,12 @@ const List = () => {
 
   const {
     selectLoading,
-    selectList,
+    selectUncompletedList,
   } = state
 
   const loading = useSelector(selectLoading)
-  const list = useSelector(selectList) || []
+  const list = useSelector(selectUncompletedList) || []
   const dispatch = useDispatch()
-
-  const total = length(list)
-  // this is not ideal, server should return the id and update history?
-  const nextId = total === 0 ? 1 : inc(total)
 
   const handleCreate = () => {
     dispatch(state.create())
@@ -30,7 +26,11 @@ const List = () => {
 
   const handleRemove = curry((id, e) => {
     e.preventDefault()
-    dispatch(state.remove({ id }))
+    const item = list.find(propEq('id', id))
+    dispatch(state.update({
+      ...item,
+      complete: true
+    }))
   })
 
   const items = id
@@ -58,11 +58,9 @@ const List = () => {
         }
       </Todos>
       <Footer>
-        <Link to={`/todos/editor/${nextId}`} onClick={handleCreate}>
-          <button>
-            {`Create Todos`}
-          </button>
-        </Link>
+        <button onClick={handleCreate}>
+          {`Create Todos`}
+        </button>
       </Footer>
     </>
   )

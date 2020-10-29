@@ -1,5 +1,7 @@
-import { put, takeLatest, all } from 'redux-saga/effects'
+import { put, takeLatest, all, call } from 'redux-saga/effects'
 import * as actions from 'components/Todos/state'
+import { history } from 'store'
+import { prop } from 'ramda'
 
 import { API_BASE, TODOS } from 'utils/constants'
 
@@ -9,6 +11,8 @@ function* createEntity() {
   const json = yield fetch(`${API_BASE}/create/${ENTITY}`)
     .then(res => res.json())
 
+
+  yield call(history.push, `/todos/editor/${prop('id', json)}`)
   yield put({ type: actions.createSuccess.toString(), payload: json })
 }
 

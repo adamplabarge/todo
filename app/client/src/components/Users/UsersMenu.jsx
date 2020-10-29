@@ -2,7 +2,7 @@ import React from 'react'
 import styled from '@emotion/styled'
 import { useSelector } from 'utils/utils'
 import { selectUserId } from 'components/App/state'
-import { compose, head, split, propOr } from 'ramda'
+import { compose, head, split, propOr, prop } from 'ramda'
 import { selectEntityStrict as selectUserStrict } from 'components/Users/state'
 
 import { Link } from 'react-router-dom'
@@ -18,8 +18,8 @@ const UserMenu = () => {
 
   return <>
     <Link to={`/users`}>
-      <UserIcon iconColor={propOr('#FFE9BB', 'icon', user)}>
-        <UserLabel>{firstLetter}</UserLabel>
+      <UserIcon color={propOr('', 'icon', user)}>
+        <UserLabel>{firstLetter || `+`}</UserLabel>
       </UserIcon>
     </Link>
   </>
@@ -32,14 +32,17 @@ const UserIcon = styled.div(props => `
   height: 2em;
   border-radius: 50%;
 
-  background-color: ${props.iconColor};
+  background-color: ${prop('color', props)};
+  ${!prop('color', props) && `background-image: linear-gradient(to right, #f857a6 0%, #ff5858  51%, #f857a6  100%);`}
   border: 0.1em solid #fff;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 `)
 
 const UserLabel = styled.span`
   font-size: 1.5em;
-  position: relative;
-  left: 0.28em;
-  bottom: 0.2em;
   color: #fff;
 `
