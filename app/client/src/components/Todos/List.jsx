@@ -4,6 +4,8 @@ import styled from '@emotion/styled'
 import * as state from './state'
 import { inc, prop, curry, propEq, isEmpty } from 'ramda'
 import { Link, useParams } from 'react-router-dom'
+import { selectHasList as selectHasUsers } from 'components/Users/state'
+import { selectHasList as selectHasGroups } from 'components/Groups/state'
 
 import { Footer } from 'components/Layout'
 
@@ -17,7 +19,9 @@ const List = () => {
   } = state
 
   const loading = useSelector(selectLoading)
-  const list = useSelector(selectUncompletedList) || []
+  const list = useSelector(selectUncompletedList)
+  const hasUsers = useSelector(selectHasUsers)
+  const hasGroups = useSelector(selectHasGroups)
   const dispatch = useDispatch()
 
   const handleCreate = () => {
@@ -36,6 +40,8 @@ const List = () => {
   const items = id
     ? list.filter(propEq('group', id))
     : list
+
+  const canAdd = hasUsers && hasGroups
 
   return (
     <>
@@ -58,7 +64,9 @@ const List = () => {
         }
       </Todos>
       <Footer>
-        <button onClick={handleCreate}>
+        <button
+          disabled={!canAdd}
+          onClick={handleCreate}>
           {`Create Todos`}
         </button>
       </Footer>

@@ -19,6 +19,7 @@ import * as Groups from 'components/Groups'
 export const startApp = createTypeAction('startApp')
 
 const App = () => {
+
   const dispatch = useDispatch()
 
   const [cookies] = useCookies()
@@ -112,6 +113,10 @@ const AppWrapper = styled.div`
       text-decoration: none;
     }
     
+    &:disabled {
+      opacity: 0.5;
+      cursor: inherit;
+    }
   }
 `
 

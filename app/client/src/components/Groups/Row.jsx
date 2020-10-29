@@ -2,22 +2,23 @@ import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import styled from '@emotion/styled'
 import * as state from './state'
-import { length, inc, prop, isEmpty } from 'ramda'
+import { prop, isEmpty, propEq, compose, last, split } from 'ramda'
 import { capitalizeFirstLetter } from 'utils/utils'
-import { Link, useRouteMatch } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { GROUPS } from 'utils/constants'
+import { selectHasList as selectHasUsers } from 'components/Users/state'
+import { withRouter } from "react-router";
 
 const groupDisplayName = item => isEmpty(prop('name', item)) ? prop('id', item) : prop('name', item)
 
 const Row = ({
-  layout
+  location
 }) => {
 
   const entityName = GROUPS
 
-  const { path } = useRouteMatch()
-  const entityBasePath = path.includes(GROUPS) ? path : `${path}${GROUPS}`
-
+  const dispatch = useDispatch()
+  
   const {
     selectLoading,
     selectList,
@@ -25,15 +26,19 @@ const Row = ({
 
   const loading = useSelector(selectLoading)
   const list = useSelector(selectList)
-  const dispatch = useDispatch()
-
-  const total = length(list)
-  // this is not ideal, server should return the id and update history?
-  const nextId = total === 0 ? 1 : inc(total)
-
+  const hasUsers = useSelector(selectHasUsers)
+  const selectedId = compose(
+    parseInt,
+    last,
+    split(''),
+    prop('pathname')
+  )(location)
+  
   const handleCreate = () => {
     dispatch(state.create())
   }
+
+  const canAdd = hasUsers
 
   return (
     <Groups>
@@ -42,23 +47,33 @@ const Row = ({
       }
       {
         <>
-          <RowItems layout={layout}>
+          <RowItems>
             {
               list && list
                 .filter(item => !isEmpty(prop('name', item)))
                 .map(item =>
                 <Link key={prop('id', item)} to={`/todos/${prop('id', item)}`}>
                   <RowItem>
-                    <GroupName>{groupDisplayName(item)}</GroupName>
+                    <GroupName
+                      selected={propEq('id', selectedId, item)}
+                    >
+                        {groupDisplayName(item)}
+                    </GroupName>
                   </RowItem>
                 </Link>
               )
             }
           </RowItems>
           <Actions>
-            <AllGroupsLink to="/todos"><span style={{marginRight: '1em'}}>All Todos</span></AllGroupsLink>
-            <AllGroupsLink to="/groups">All Groups</AllGroupsLink>
-            <button onClick={handleCreate}>
+            <AllGroupsLink to="/todos">
+              <span style={{marginRight: '1em'}}>All Todos</span>
+            </AllGroupsLink>
+            <AllGroupsLink to="/groups">
+              <span>All Groups</span>
+            </AllGroupsLink>
+            <button
+              disabled={!canAdd}
+              onClick={handleCreate}>
               {`Create ${capitalizeFirstLetter(entityName)}`}
             </button>
           </Actions>
@@ -69,7 +84,7 @@ const Row = ({
 }
 
 
-export default Row
+export default withRouter(Row)
 
 const Groups = styled.div`
   display: flex;
@@ -107,10 +122,11 @@ const RowItem = styled.div`
   align-content: center;
 `
 
-const GroupName = styled.div(`
+const unSelected = `background-image: linear-gradient(to right, rgba(31, 162, 255, .8) 0%, #12D8FA  51%, rgba(31, 162, 255, .5)  100%);`
+const selected = `background-image: linear-gradient(to right, #1D976C 0%, #93F9B9  51%, #1D976C  100%);`
+const GroupName = styled.div(props => `
   cursor: pointer;
-
-  background-image: linear-gradient(to right, rgba(31, 162, 255, .8) 0%, #12D8FA  51%, rgba(31, 162, 255, .5)  100%);
+  ${prop('selected', props) ? selected : unSelected}
 
   margin: .5em;
   padding: .5em 1em;

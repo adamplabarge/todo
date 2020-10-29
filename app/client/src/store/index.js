@@ -39,4 +39,5 @@ const createStore = () => {
 const store = createStore()
 
 export const history = syncHistoryWithStore(createBrowserHistory(), store)
+
 export default store

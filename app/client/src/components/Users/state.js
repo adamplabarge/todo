@@ -81,7 +81,6 @@ export const selectEntity = createSelector(
   selectList,
   (_, props) => propOr(null, 'id', props),
   (list, id) => {
-    console.log(list)
     if (!list) return null
     const item = list.find(propEq('id', parseInt(id)))
     if (item) return item
@@ -93,7 +92,6 @@ export const selectEntityStrict = createSelector(
   selectList,
   (_, props) => propOr(null, 'id', props),
   (list, id) => {
-    console.log(list)
     if (!list) return null
     const item = list.find(propEq('id', parseInt(id)))
     if (item) return item

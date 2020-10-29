@@ -3,17 +3,13 @@ import { useSelector, useDispatch } from 'react-redux'
 import styled from '@emotion/styled'
 import * as state from './state'
 import { prop, isEmpty, curry } from 'ramda'
-import { Link, useRouteMatch } from 'react-router-dom'
-import { GROUPS } from 'utils/constants'
+import { Link } from 'react-router-dom'
 
 const groupDisplayName = item => isEmpty(prop('name', item)) ? prop('id', item) : prop('name', item)
 
 const List = ({
   layout
 }) => {
-
-  const { path } = useRouteMatch()
-  const entityBasePath = path.includes(GROUPS) ? path : `${path}${GROUPS}`
 
   const {
     selectLoading,
@@ -40,7 +36,7 @@ const List = ({
             list && list
               .filter(item => !isEmpty(prop('name', item)))
               .map(item =>
-              <Link key={prop('id', item)} to={`${entityBasePath}/editor/${prop('id', item)}`}>
+              <Link key={prop('id', item)} to={`$/groups/editor/${prop('id', item)}`}>
                 <ColItem>
                   <div>{groupDisplayName(item)}</div>
                   {/* <Remove onClick={handleRemove(prop('id', item))}><span>X</span></Remove> */}

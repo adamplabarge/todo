@@ -50,7 +50,7 @@ const Editor = () => {
     {
       showEditor && <>
         <Form onSubmit={handleSubmit(onSubmit)}>
-        <h2 style={{marginTop: 0}}>Create/Edit Todo</h2>
+          <h2 style={{marginTop: 0}}>Edit Todo:</h2>
           <input name="id" type="hidden" value={prop('id', todo)} ref={register} />
           <input name="user" type="hidden" value={userId} ref={register} />
           <Label>
