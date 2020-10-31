@@ -9,7 +9,6 @@ import { TODOS, GROUPS } from 'utils/constants'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faExpand, faClipboardCheck, faObjectGroup } from '@fortawesome/free-solid-svg-icons'
-import { FullScreen, useFullScreenHandle } from "react-full-screen"
 import { Datetime } from 'components/Datetime'
 import {
   Switch,
@@ -28,12 +27,8 @@ const App = () => {
 
   const dispatch = useDispatch()
 
-  const [fullScreen, setFullScreen] = useState(false)
-
   const [cookies] = useCookies()
   const id = prop('user', cookies)
-
-  const fullScreenHandle = useFullScreenHandle()
   
   useEffect(() => {
     dispatch(startApp())
@@ -43,18 +38,11 @@ const App = () => {
     dispatch(setUserId({ id }))
   }, [id])
 
-  const fullScreenHandler = () => {
-    const isFullSceen = !fullScreen
-    if (isFullSceen) fullScreenHandle.enter()
-    fullScreenHandle.exit()
-    setFullScreen(isFullSceen)
-  }
-
   return (
   <div>  
-    <FullScreen handle={fullScreenHandle}>
+    <>
       <AppWrapper>
-        <AppHeader fullScreenHandler={fullScreenHandler} />
+        <AppHeader />
         <AppBody>
           <Groups.Row />
           <Switch>
@@ -82,16 +70,14 @@ const App = () => {
           </Switch>
         </AppBody>
       </AppWrapper>
-    </FullScreen>
+    </>
   </div>
   )
 }
 
 export default App
 
-const AppHeader = ({
-  fullScreenHandler
-}) => <AppHeaderWrapper>
+const AppHeader = () => <AppHeaderWrapper>
   <HeaderItem>
     <Datetime />
   </HeaderItem>
@@ -105,11 +91,6 @@ const AppHeader = ({
     </Link>
     <Spacer />
     <Users.UsersMenu />
-    <Spacer />
-    <Controls>
-
-      <FontAwesomeIcon icon={faExpand} onClick={fullScreenHandler} />
-    </Controls>
   </HeaderItem>
 </AppHeaderWrapper>
 
