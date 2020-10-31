@@ -3,7 +3,10 @@ import { useSelector, useDispatch } from 'react-redux'
 import styled from '@emotion/styled'
 import * as state from './state'
 import { prop, isEmpty, curry } from 'ramda'
+import { selectHasList as selectHasUsers } from 'components/Users/state'
+
 import { Link } from 'react-router-dom'
+import { Footer } from 'components/Layout'
 
 const groupDisplayName = item => isEmpty(prop('name', item)) ? prop('id', item) : prop('name', item)
 
@@ -16,6 +19,7 @@ const List = ({
     selectList,
   } = state
 
+  const hasUsers = useSelector(selectHasUsers)
   const loading = useSelector(selectLoading)
   const list = useSelector(selectList)
   const dispatch = useDispatch()
@@ -25,35 +29,60 @@ const List = ({
     dispatch(state.remove({ id }))
   })
 
+  const handleCreate = () => {
+    dispatch(state.create())
+  }
+
+  const canAdd = hasUsers
+
   return (
-    <Groups>
+    <>
       {
         loading && <div>We are loading something...</div>
       }
       {
-        <ColItems layout={layout}>
-          {
-            list && list
-              .filter(item => !isEmpty(prop('name', item)))
-              .map(item =>
-              <Link key={prop('id', item)} to={`$/groups/editor/${prop('id', item)}`}>
-                <ColItem>
-                  <div>{groupDisplayName(item)}</div>
-                  {/* <Remove onClick={handleRemove(prop('id', item))}><span>X</span></Remove> */}
-                </ColItem>
-              </Link>
-            )
-          }
-        </ColItems>
+        <>
+          <Groups>
+            <ColItems layout={layout}>
+              {
+                list && list
+                  .filter(item => !isEmpty(prop('name', item)))
+                  .map(item =>
+                  <Link key={prop('id', item)} to={`$/groups/editor/${prop('id', item)}`}>
+                    <ColItem>
+                      <div>{groupDisplayName(item)}</div>
+                      {/* <Remove onClick={handleRemove(prop('id', item))}><span>X</span></Remove> */}
+                    </ColItem>
+                  </Link>
+                )
+              }
+            </ColItems>
+          </Groups>
+            <Footer>
+            <AddGroupBtn
+              disabled={!canAdd}
+              onClick={handleCreate}
+            >
+              Add Group
+            </AddGroupBtn>
+          </Footer>
+        </>
       }
-    </Groups>
+    </>
   )
 }
 
 export default List
 
+const AddGroupBtn = styled.button`
+  && {
+    background-image: linear-gradient(to right, #12D8FA 0%, rgba(31, 162, 255, .8)  51%, #12D8FA  100%);
+  }
+`
+
 const Groups = styled.div`
-  padding: 1em;
+  padding: 0 1em;
+  background-color: #000;
 `
 
 const ColItems = styled.div`

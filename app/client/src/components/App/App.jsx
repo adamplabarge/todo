@@ -5,12 +5,15 @@ import { useDispatch } from 'react-redux'
 import { useCookies } from 'react-cookie'
 import { setUserId } from './state'
 import { prop } from 'ramda'
+import { TODOS, GROUPS } from 'utils/constants'
 
 import { Datetime } from 'components/Datetime'
 import {
   Switch,
   Route,
+  Link
 } from "react-router-dom"
+import { Icon } from 'components/Icon'
 
 import * as Todos from 'components/Todos'
 import * as Users from 'components/Users'
@@ -36,14 +39,7 @@ const App = () => {
   return (
     <>
       <AppWrapper>
-        <AppHeader>
-          <HeaderItem>
-            <Datetime />
-          </HeaderItem>
-          <HeaderItem>
-            <Users.UsersMenu />
-          </HeaderItem>
-        </AppHeader>
+        <AppHeader />
         <AppBody>
           <Groups.Row />
           <Switch>
@@ -76,6 +72,21 @@ const App = () => {
 }
 
 export default App
+
+const AppHeader = () => <AppHeaderWrapper>
+  <HeaderItem>
+    <Datetime />
+  </HeaderItem>
+    <Link to="/todos">
+      <Icon type={TODOS}><span>T</span></Icon>
+    </Link>
+    <Link to="/groups">
+      <Icon type={GROUPS}><span>G</span></Icon>
+    </Link>
+  <HeaderItem>
+    <Users.UsersMenu />
+  </HeaderItem>
+</AppHeaderWrapper>
 
 const AppWrapper = styled.div`
   display: flex;
@@ -121,7 +132,7 @@ const AppWrapper = styled.div`
 `
 
 
-const AppHeader = styled.div`
+const AppHeaderWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;

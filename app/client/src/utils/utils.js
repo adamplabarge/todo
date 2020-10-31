@@ -26,3 +26,6 @@ export const getFirstLetter = (string ='') => compose(
 
 /** others */
 export const entityFromPath = path => head(path.split('/').slice(1))
+
+/** styles */
+export const stylesIf = (condition, styles) => (condition ? styles : '')

@@ -1,21 +1,28 @@
-import React from 'react'
+import React, { useMemo, useRef, useEffect, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import styled from '@emotion/styled'
 import * as state from './state'
-import { prop, isEmpty, propEq, compose, last, split } from 'ramda'
-import { capitalizeFirstLetter } from 'utils/utils'
+import { prop, isEmpty, propEq, compose, last, split, test, pathOr } from 'ramda'
 import { Link } from 'react-router-dom'
-import { GROUPS } from 'utils/constants'
-import { selectHasList as selectHasUsers } from 'components/Users/state'
 import { withRouter } from "react-router";
 
+import ScrollContainer from 'react-indiana-drag-scroll'
+
 const groupDisplayName = item => isEmpty(prop('name', item)) ? prop('id', item) : prop('name', item)
+const getIdFromPath = compose(
+  parseInt,
+  last,
+  split(''),
+  prop('pathname')
+)
+const isTodosRoute = compose(
+  test(/^todos/),
+  prop('pathname')
+)
 
 const Row = ({
   location
 }) => {
-
-  const entityName = GROUPS
 
   const dispatch = useDispatch()
   
@@ -24,21 +31,21 @@ const Row = ({
     selectList,
   } = state
 
+  const scrollWrapperEl = useRef(null)
+
   const loading = useSelector(selectLoading)
   const list = useSelector(selectList)
-  const hasUsers = useSelector(selectHasUsers)
-  const selectedId = compose(
-    parseInt,
-    last,
-    split(''),
-    prop('pathname')
-  )(location)
-  
-  const handleCreate = () => {
-    dispatch(state.create())
-  }
+  const selectedId = useMemo(() => getIdFromPath(location), [location])
+  const isOnTodosView = useMemo(() => isTodosRoute(location), [location])
+  const scrollWrapperWidth = useCallback(() => {
+    return pathOr('100%', ['current', 'clientWidth'], scrollWrapperEl)
+  })
 
-  const canAdd = hasUsers
+  useEffect(() => {
+    scrollWrapperWidth()
+  }, [])
+
+  const isSelected = (group) => propEq('id', selectedId, group) && isOnTodosView
 
   return (
     <Groups>
@@ -46,45 +53,43 @@ const Row = ({
         loading && <div>We are loading something...</div>
       }
       {
-        <>
-          <RowItems>
-            {
-              list && list
-                .filter(item => !isEmpty(prop('name', item)))
-                .map(item =>
-                <Link key={prop('id', item)} to={`/todos/${prop('id', item)}`}>
-                  <RowItem>
-                    <GroupName
-                      selected={propEq('id', selectedId, item)}
-                    >
-                        {groupDisplayName(item)}
-                    </GroupName>
-                  </RowItem>
-                </Link>
-              )
-            }
-          </RowItems>
-          <Actions>
-            <AllGroupsLink to="/todos">
-              <span style={{marginRight: '1em'}}>All Todos</span>
-            </AllGroupsLink>
-            <AllGroupsLink to="/groups">
-              <span>All Groups</span>
-            </AllGroupsLink>
-            <button
-              disabled={!canAdd}
-              onClick={handleCreate}>
-              {`Create ${capitalizeFirstLetter(entityName)}`}
-            </button>
-          </Actions>
-        </>
+        <RowItems>
+          <ScrollContainer vertical={false}>
+            <ScrollWrapper ref={scrollWrapperEl} width={scrollWrapperWidth}>
+              {
+                list && list
+                  .filter(item => !isEmpty(prop('name', item)))
+                  .map(item =>
+                  <Link key={prop('id', item)} to={`/todos/${prop('id', item)}`}>
+                    <RowItem>
+                      <GroupName
+                        selected={isSelected(item)}
+                      >
+                          {groupDisplayName(item)}
+                      </GroupName>
+                    </RowItem>
+                  </Link>
+                )
+              }
+            </ScrollWrapper>
+          </ScrollContainer>
+        </RowItems>
       }
     </Groups>
   )
 }
 
-
 export default withRouter(Row)
+
+const ScrollWrapper = styled.div(props => `
+  height: 100%;
+  display: flex;
+  align-items: center;
+  width: ${prop('width', props)} ;
+  justify-content: flex-start;
+`)
+
+
 
 const Groups = styled.div`
   display: flex;
@@ -99,28 +104,13 @@ const Groups = styled.div`
   padding: .5em;
 `
 
-const Actions = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-content: center;
-`
-
-const AllGroupsLink = styled(Link)`
-  padding: .5em;
-`
-
 const RowItems = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
+  width: 100%;
 `
 
 const RowItem = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-content: center;
+  display: inline-block;
+  white-space:nowrap;
 `
 
 const unSelected = `background-image: linear-gradient(to right, rgba(31, 162, 255, .8) 0%, #12D8FA  51%, rgba(31, 162, 255, .5)  100%);`

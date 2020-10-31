@@ -15,11 +15,11 @@ const List = () => {
 
   const {
     selectLoading,
-    selectUncompletedList,
+    selectListForUser,
   } = state
 
   const loading = useSelector(selectLoading)
-  const list = useSelector(selectUncompletedList)
+  const list = useSelector(selectListForUser)
   const hasUsers = useSelector(selectHasUsers)
   const hasGroups = useSelector(selectHasGroups)
   const dispatch = useDispatch()
@@ -67,7 +67,7 @@ const List = () => {
         <button
           disabled={!canAdd}
           onClick={handleCreate}>
-          {`Create Todos`}
+          {`Create Todo`}
         </button>
       </Footer>
     </>

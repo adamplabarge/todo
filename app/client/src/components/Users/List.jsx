@@ -7,7 +7,7 @@ import { entityFromPath, capitalizeFirstLetter, getFirstLetter } from 'utils/uti
 import { Link, useRouteMatch } from 'react-router-dom'
 
 import { Footer } from 'components/Layout'
-import { UserIcon } from './UsersMenu'
+import { Icon } from 'components/Icon'
 
 const List = () => {
 
@@ -39,7 +39,7 @@ const List = () => {
             <Link key={prop('id', item)} to={`${path}/editor/${prop('id', item)}`}>
               <User>
                 <div>
-                  <UserIcon color={prop('icon', item)}>{getFirstLetter(prop('name', item))}</UserIcon>
+                  <Icon color={prop('icon', item)}>{getFirstLetter(prop('name', item))}</Icon>
                   <strong style={{marginLeft: '1em'}}>{prop('name', item)}</strong>
                 </div>
                 <div>
@@ -51,9 +51,9 @@ const List = () => {
         }
       </Users>
       <Footer>
-        <button onClick={handleCreate}>
+        <StyledButton onClick={handleCreate}>
           {`Create ${capitalizeFirstLetter(entityName)}`}
-        </button>
+        </StyledButton>
       </Footer>
     </>
   )
@@ -62,8 +62,16 @@ const List = () => {
 export default List
 
 const Users = styled.div`
-  padding: 1em;
+  padding: 0 1em;
+  background-color: #000;
 `
+
+const StyledButton = styled.button`
+ && {
+   background-image: linear-gradient(to right, #4CB8C4 0%, #3CD3AD  51%, #4CB8C4  100%);
+ }
+`
+
 
 const User = styled.div`
   display: flex;

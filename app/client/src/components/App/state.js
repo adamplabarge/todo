@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { createSelector } from 'reselect'
-import { prop, path } from 'ramda'
+import { prop, path, propOr } from 'ramda'
 
 const ENTITY = 'app'
 
@@ -36,7 +36,7 @@ export const selectUser = createSelector(
 
 export const selectUserId = createSelector(
   selectUser,
-  prop('id')
+  propOr(0, 'id')
 )
 
 export const {

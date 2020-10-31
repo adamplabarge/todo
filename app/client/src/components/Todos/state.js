@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { createSelector } from 'reselect'
 import { prop, isEmpty, complement, head, propEq, propOr, filter } from 'ramda'
+import { selectUserId } from 'components/App/state'
 
 const ENTITY = 'todos'
 
@@ -67,9 +68,15 @@ export const selectList = createSelector(
   prop('list')
 )
 
-export const selectUncompletedList = createSelector(
+export const selectCompletedList = createSelector(
   selectList,
   filter(propEq('complete', false))
+)
+
+export const selectListForUser = createSelector(
+  selectCompletedList,
+  selectUserId,
+  (list, id) => filter(propEq('user', id))(list)
 )
 
 export const selectHasList = createSelector(
