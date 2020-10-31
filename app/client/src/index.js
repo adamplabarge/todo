@@ -11,7 +11,6 @@ import {
   Router,
 } from "react-router-dom"
 
-
 ReactDOM.render(
   <React.StrictMode>
     <CookiesProvider>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import { createTypeAction } from 'utils/utils'
 import { useDispatch } from 'react-redux'
@@ -7,6 +7,9 @@ import { setUserId } from './state'
 import { prop } from 'ramda'
 import { TODOS, GROUPS } from 'utils/constants'
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faExpand, faClipboardCheck, faObjectGroup } from '@fortawesome/free-solid-svg-icons'
+import { FullScreen, useFullScreenHandle } from "react-full-screen"
 import { Datetime } from 'components/Datetime'
 import {
   Switch,
@@ -25,8 +28,12 @@ const App = () => {
 
   const dispatch = useDispatch()
 
+  const [fullScreen, setFullScreen] = useState(false)
+
   const [cookies] = useCookies()
   const id = prop('user', cookies)
+
+  const fullScreenHandle = useFullScreenHandle()
   
   useEffect(() => {
     dispatch(startApp())
@@ -36,10 +43,18 @@ const App = () => {
     dispatch(setUserId({ id }))
   }, [id])
 
+  const fullScreenHandler = () => {
+    const isFullSceen = !fullScreen
+    if (isFullSceen) fullScreenHandle.enter()
+    fullScreenHandle.exit()
+    setFullScreen(isFullSceen)
+  }
+
   return (
-    <>
+  <div>  
+    <FullScreen handle={fullScreenHandle}>
       <AppWrapper>
-        <AppHeader />
+        <AppHeader fullScreenHandler={fullScreenHandler} />
         <AppBody>
           <Groups.Row />
           <Switch>
@@ -67,28 +82,43 @@ const App = () => {
           </Switch>
         </AppBody>
       </AppWrapper>
-    </>
+    </FullScreen>
+  </div>
   )
 }
 
 export default App
 
-const AppHeader = () => <AppHeaderWrapper>
+const AppHeader = ({
+  fullScreenHandler
+}) => <AppHeaderWrapper>
   <HeaderItem>
     <Datetime />
   </HeaderItem>
   <HeaderItem>
     <Link to="/todos">
-      <Icon type={TODOS}><span>T</span></Icon>
+      <Icon type={TODOS}><FontAwesomeIcon icon={faClipboardCheck} /></Icon>
     </Link>
     <Spacer />
     <Link to="/groups">
-      <Icon type={GROUPS}><span>G</span></Icon>
+      <Icon type={GROUPS}><FontAwesomeIcon icon={faObjectGroup} /></Icon>
     </Link>
     <Spacer />
     <Users.UsersMenu />
+    <Spacer />
+    <Controls>
+
+      <FontAwesomeIcon icon={faExpand} onClick={fullScreenHandler} />
+    </Controls>
   </HeaderItem>
 </AppHeaderWrapper>
+
+const Controls = styled.div`
+  border-radius: 3em;
+  padding: 0 0.5em;
+  font-size: 1.5em;
+  background-color: #1E1E1E;
+`
 
 const AppWrapper = styled.div`
   display: flex;
@@ -101,6 +131,12 @@ const AppWrapper = styled.div`
   a {
     color: #fff;
     text-decoration: none;
+  }
+
+  svg.svg-inline--fa {
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   button,

@@ -7,6 +7,8 @@ import { Link, useParams } from 'react-router-dom'
 import { selectHasList as selectHasUsers } from 'components/Users/state'
 import { selectHasList as selectHasGroups } from 'components/Groups/state'
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCheck } from '@fortawesome/free-solid-svg-icons'
 import { Footer } from 'components/Layout'
 
 const List = () => {
@@ -54,7 +56,9 @@ const List = () => {
             <Link key={prop('id', item)} to={`/todos/editor/${prop('id', item)}`}>
               <Todo>
                 {inc(index)}. {prop('title', item)} : (Priority {prop('priority', item)})
-                <Remove onClick={handleRemove(prop('id', item))}><span>X</span></Remove>
+                <Remove onClick={handleRemove(prop('id', item))}>
+                  <FontAwesomeIcon icon={faCheck} />
+                </Remove>
               </Todo>
             </Link>
           )
@@ -106,13 +110,13 @@ const Remove = styled.div`
   max-height: 1.5em;
   cursor: pointer;
 
-  span {
+  svg {
     position: relative;
-    left: 0.34em;
-    bottom: 0.13em;
+    left: 0.15em;
+    bottom: 0..75em;
   }
 
   &:hover {
-    background-color: #EB3349;
+    background-color: #5cb052;
   }
 `

@@ -6,6 +6,9 @@
   "dependencies": {
     "@emotion/core": "^10.0.35",
     "@emotion/styled": "^10.0.27",
+    "@fortawesome/fontawesome-svg-core": "^1.2.32",
+    "@fortawesome/free-solid-svg-icons": "^5.15.1",
+    "@fortawesome/react-fontawesome": "^0.1.12",
     "@reduxjs/toolkit": "^1.1.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
@@ -16,6 +19,7 @@
     "react-color": "^2.18.1",
     "react-cookie": "^4.0.3",
     "react-dom": "^17.0.0",
+    "react-full-screen": "^0.3.1",
     "react-hook-form": "^6.9.6",
     "react-indiana-drag-scroll": "^1.7.2",
     "react-live-clock": "^5.0.9",
