@@ -77,13 +77,15 @@ const AppHeader = () => <AppHeaderWrapper>
   <HeaderItem>
     <Datetime />
   </HeaderItem>
+  <HeaderItem>
     <Link to="/todos">
       <Icon type={TODOS}><span>T</span></Icon>
     </Link>
+    <Spacer />
     <Link to="/groups">
       <Icon type={GROUPS}><span>G</span></Icon>
     </Link>
-  <HeaderItem>
+    <Spacer />
     <Users.UsersMenu />
   </HeaderItem>
 </AppHeaderWrapper>
@@ -131,6 +133,9 @@ const AppWrapper = styled.div`
   }
 `
 
+const Spacer = styled.div`
+  width: 0.25em;
+`
 
 const AppHeaderWrapper = styled.div`
   display: flex;
