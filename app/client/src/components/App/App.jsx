@@ -117,23 +117,14 @@ const AppHeader = ({
           <Users.UsersMenu />
         </HeaderItem>
       </AppHeaderWrapper>
-      <Controls>
-        {fullScreenErrorMessage ? (
-          <span
-            onClick={() =>
-              alert(
-                "Fullscreen is unsupported by this browser, please try another browser."
-              )
-            }
-          >
-            {fullScreenErrorMessage}
-          </span>
-        ) : isFullscreen ? (
+      <span onClick={goFullScreen}><FontAwesomeIcon icon={faExpand} /></span>
+      {/* <Controls>
+        {fullScreenErrorMessage ? (null) : isFullscreen ? (
           <span onClick={exitFullScreen}><FontAwesomeIcon icon={faCompress} /></span>
         ) : (
           <span onClick={goFullScreen}><FontAwesomeIcon icon={faExpand} /></span>
         )}
-      </Controls>
+      </Controls> */}
     </>
   )
 }
