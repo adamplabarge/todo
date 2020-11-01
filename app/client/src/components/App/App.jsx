@@ -8,7 +8,7 @@ import { prop } from 'ramda'
 import { TODOS, GROUPS } from 'utils/constants'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faExpand, faClipboardCheck, faObjectGroup } from '@fortawesome/free-solid-svg-icons'
+import { faExpand, faCompress, faClipboardCheck, faObjectGroup } from '@fortawesome/free-solid-svg-icons'
 import { Datetime } from 'components/Datetime'
 import {
   Switch,
@@ -16,6 +16,7 @@ import {
   Link
 } from "react-router-dom"
 import { Icon } from 'components/Icon'
+import { FullScreen } from 'components/FullScreen'
 
 import * as Todos from 'components/Todos'
 import * as Users from 'components/Users'
@@ -40,8 +41,8 @@ const App = () => {
 
   return (
   <div>  
-    <>
-      <AppWrapper>
+    <AppWrapper>
+      <FullScreen backgroundColor="#000">
         <AppHeader />
         <AppBody>
           <Groups.Row />
@@ -69,36 +70,66 @@ const App = () => {
             </Route>
           </Switch>
         </AppBody>
-      </AppWrapper>
-    </>
+      </FullScreen>
+    </AppWrapper>
   </div>
   )
 }
 
 export default App
 
-const AppHeader = () => <AppHeaderWrapper>
-  <HeaderItem>
-    <Datetime />
-  </HeaderItem>
-  <HeaderItem>
-    <Link to="/todos">
-      <Icon type={TODOS}><FontAwesomeIcon icon={faClipboardCheck} /></Icon>
-    </Link>
-    <Spacer />
-    <Link to="/groups">
-      <Icon type={GROUPS}><FontAwesomeIcon icon={faObjectGroup} /></Icon>
-    </Link>
-    <Spacer />
-    <Users.UsersMenu />
-  </HeaderItem>
-</AppHeaderWrapper>
+const AppHeader = ({
+  isFullscreen,
+  setIsFullscreen,
+  handleExitFullscreen,
+  fullScreenErrorMessage,
+}) => {
+  return (
+    <>
+      <AppHeaderWrapper>
+        <HeaderItem>
+          <Datetime />
+        </HeaderItem>
+        <HeaderItem>
+          <Link to="/todos">
+            <Icon type={TODOS}><FontAwesomeIcon icon={faClipboardCheck} /></Icon>
+          </Link>
+          <Spacer />
+          <Link to="/groups">
+            <Icon type={GROUPS}><FontAwesomeIcon icon={faObjectGroup} /></Icon>
+          </Link>
+          <Spacer />
+          <Users.UsersMenu />
+        </HeaderItem>
+      </AppHeaderWrapper>
+      <Controls>
+        {fullScreenErrorMessage ? (
+          <span
+            onClick={() =>
+              alert(
+                "Fullscreen is unsupported by this browser, please try another browser."
+              )
+            }
+          >
+            {fullScreenErrorMessage}
+          </span>
+        ) : isFullscreen ? (
+          <span onClick={handleExitFullscreen}><FontAwesomeIcon icon={faCompress} /></span>
+        ) : (
+          <span onClick={setIsFullscreen}><FontAwesomeIcon icon={faExpand} /></span>
+        )}
+      </Controls>
+    </>
+  )
+}
 
 const Controls = styled.div`
-  border-radius: 3em;
-  padding: 0 0.5em;
-  font-size: 1.5em;
   background-color: #1E1E1E;
+  border-radui: 3em;
+  padding: 0 0.5em;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
 `
 
 const AppWrapper = styled.div`
