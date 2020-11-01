@@ -102,22 +102,23 @@ const AppHeader = ({
           </Link>
           <Spacer />
           <Users.UsersMenu />
+          <Spacer />
+          <Controls>
+            {fullScreenErrorMessage ? (null) : isFullscreen ? (
+              <span onClick={handleExitFullscreen}><FontAwesomeIcon icon={faCompress} /></span>
+            ) : (
+              <span onClick={setIsFullscreen}><FontAwesomeIcon icon={faExpand} /></span>
+            )}
+          </Controls>
         </HeaderItem>
       </AppHeaderWrapper>
-      <Controls>
-        {fullScreenErrorMessage ? (null) : isFullscreen ? (
-          <span onClick={handleExitFullscreen}><FontAwesomeIcon icon={faCompress} /></span>
-        ) : (
-          <span onClick={setIsFullscreen}><FontAwesomeIcon icon={faExpand} /></span>
-        )}
-      </Controls>
     </>
   )
 }
 
 const Controls = styled.div`
   background-color: #1E1E1E;
-  border-radui: 3em;
+  border-radius: 3em;
   padding: 0 0.5em;
   display: flex;
   flex-direction: row;
