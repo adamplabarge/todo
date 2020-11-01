@@ -81,8 +81,7 @@ const handlers = {
               })
             }
             else {
-              const id = R.inc(parseInt(R.prop('id', R.last(sortAscBy(entity, data)))))
-              console.log(id)
+              const id = R.inc(parseInt(R.prop('id', R.last(sortAscBy('id', data)))))
               const item = {
                 ...entityDefaults[entity],
                 id: id
