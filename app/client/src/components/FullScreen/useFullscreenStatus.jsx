@@ -9,11 +9,10 @@ const useFullscreenStatus = (elRef) => {
     if (elRef.current == null) return
 
     const requestFullScreen = elRef.requestFullscreen || elRef.mozRequestFullScreen || elRef.webkitRequestFullScreen || elRef.msRequestFullscreen
-    //const cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen
+    // const cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen
     
     requestFullScreen
-      .call(elRef.current)
-      .requestFullscreen()
+      .call(requestFullScreen)
       .then(() => {
         setIsFullscreen(document[getBrowserFullscreenElementProp()] != null)
       })
