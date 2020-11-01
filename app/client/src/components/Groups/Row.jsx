@@ -55,7 +55,7 @@ const Row = ({
       {
         <RowItems>
           <ScrollContainer vertical={false}>
-            <ScrollWrapper ref={scrollWrapperEl} width={scrollWrapperWidth}>
+            <ScrollWrapper ref={scrollWrapperEl} elmWidth={scrollWrapperWidth}>
               {
                 list && list
                   .filter(item => !isEmpty(prop('name', item)))
@@ -85,7 +85,7 @@ const ScrollWrapper = styled.div(props => `
   height: 100%;
   display: flex;
   align-items: center;
-  width: ${prop('width', props)} ;
+  width: ${prop('elmWidth', props)} ;
   justify-content: flex-start;
 `)
 

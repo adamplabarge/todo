@@ -6,6 +6,7 @@ import { useCookies } from 'react-cookie'
 import { setUserId } from './state'
 import { prop } from 'ramda'
 import { TODOS, GROUPS } from 'utils/constants'
+import  screenfull from 'screenfull' 
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faExpand, faCompress, faClipboardCheck, faObjectGroup } from '@fortawesome/free-solid-svg-icons'
@@ -23,6 +24,7 @@ import * as Users from 'components/Users'
 import * as Groups from 'components/Groups'
 
 export const startApp = createTypeAction('startApp')
+
 
 const App = () => {
 
@@ -84,6 +86,19 @@ const AppHeader = ({
   handleExitFullscreen,
   fullScreenErrorMessage,
 }) => {
+
+  const goFullScreen = () => {
+    console.log('asdfasdf')
+    if (screenfull.isEnabled) {
+      screenfull.request()
+    }
+  }
+
+  const exitFullScreen = () => {
+    if (screenfull.isEnabled) {
+      screenfull.exit()
+    }
+  }
   return (
     <>
       <AppHeaderWrapper>
@@ -114,9 +129,9 @@ const AppHeader = ({
             {fullScreenErrorMessage}
           </span>
         ) : isFullscreen ? (
-          <span onClick={handleExitFullscreen}><FontAwesomeIcon icon={faCompress} /></span>
+          <span onClick={exitFullScreen}><FontAwesomeIcon icon={faCompress} /></span>
         ) : (
-          <span onClick={setIsFullscreen}><FontAwesomeIcon icon={faExpand} /></span>
+          <span onClick={goFullScreen}><FontAwesomeIcon icon={faExpand} /></span>
         )}
       </Controls>
     </>
