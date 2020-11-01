@@ -6,7 +6,6 @@ import { useCookies } from 'react-cookie'
 import { setUserId } from './state'
 import { prop } from 'ramda'
 import { TODOS, GROUPS } from 'utils/constants'
-import  screenfull from 'screenfull' 
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faExpand, faCompress, faClipboardCheck, faObjectGroup } from '@fortawesome/free-solid-svg-icons'
@@ -87,18 +86,6 @@ const AppHeader = ({
   fullScreenErrorMessage,
 }) => {
 
-  const goFullScreen = () => {
-    console.log('asdfasdf')
-    if (screenfull.isEnabled) {
-      screenfull.request()
-    }
-  }
-
-  const exitFullScreen = () => {
-    if (screenfull.isEnabled) {
-      screenfull.exit()
-    }
-  }
   return (
     <>
       <AppHeaderWrapper>
@@ -117,14 +104,13 @@ const AppHeader = ({
           <Users.UsersMenu />
         </HeaderItem>
       </AppHeaderWrapper>
-      <span onClick={goFullScreen}><FontAwesomeIcon icon={faExpand} /></span>
-      {/* <Controls>
+      <Controls>
         {fullScreenErrorMessage ? (null) : isFullscreen ? (
-          <span onClick={exitFullScreen}><FontAwesomeIcon icon={faCompress} /></span>
+          <span onClick={handleExitFullscreen}><FontAwesomeIcon icon={faCompress} /></span>
         ) : (
-          <span onClick={goFullScreen}><FontAwesomeIcon icon={faExpand} /></span>
+          <span onClick={setIsFullscreen}><FontAwesomeIcon icon={faExpand} /></span>
         )}
-      </Controls> */}
+      </Controls>
     </>
   )
 }
