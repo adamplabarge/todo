@@ -5,7 +5,9 @@ Accomplished, but no more progress on this, needs to be rewritten with web socke
 ###Notes: 
 
 ####Auto start Express service with a service
+```
 $ nano /etc/systemd/system/{service name}.service
+```
 
 ```
 [Service]
@@ -22,22 +24,29 @@ Environment=NODE_ENV=production
 WantedBy=multi-user.target
 ```
 
+```
 $ sudo chmod u+rwx /etc/systemd/system/{service name}.service
 $ sudo systemctl enable  {service name}
 $ sudo systemctl start {service name}
 $ sudo systemctl stop {service name}
+```
 
 ####Auto start Pi in Chromium Kiosk
+```
 $ nano /home/pi/.config/lxsession/LXDE-pi/autostart
+```
+
 ```
 @chromium-brower --kiosk 192.168.xxx.xxx
 ```
 Note: Add paths if not already there lxsession/LXDE-pi/
 
 ####Reverse Proxy: NGINX
+```
 $ sudo apt update
 $ sudo apt install nginx
 $ sudo nano /etc/nginx/sites-available/default
+```
 
 ```
 server {
