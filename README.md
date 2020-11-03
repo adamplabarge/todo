@@ -5,6 +5,7 @@ Accomplished, but no more progress on this, needs to be rewritten with web socke
 ### Notes: 
 
 #### Auto start Express service with a service
+https://www.raspberrypi.org/forums/viewtopic.php?t=138861
 ```
 $ nano /etc/systemd/system/{service name}.service
 ```
@@ -32,6 +33,7 @@ $ sudo systemctl stop {service name}
 ```
 
 #### Auto start Pi in Chromium Kiosk
+https://www.raspberrypi.org/forums/viewtopic.php?t=219952
 ```
 $ nano /home/pi/.config/lxsession/LXDE-pi/autostart
 ```
@@ -42,6 +44,7 @@ $ nano /home/pi/.config/lxsession/LXDE-pi/autostart
 Note: Add paths if not already there lxsession/LXDE-pi/
 
 #### Reverse Proxy: NGINX
+https://dev.to/bogdaaamn/run-your-nodejs-application-on-a-headless-raspberry-pi-4jnn
 ```
 $ sudo apt update
 $ sudo apt install nginx
@@ -74,3 +77,6 @@ server {
 $ sudo nginx -t
 $ sudo systemctl restart nginx
 ```
+
+#### Other helpful notes
+UFW: https://www.digitalocean.com/community/tutorials/how-to-setup-a-firewall-with-ufw-on-an-ubuntu-and-debian-cloud-server
