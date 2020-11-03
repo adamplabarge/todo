@@ -1,10 +1,10 @@
-###Main idea was to get a Todo app in React/Express working on a Raspberry Pi in kiosk mode.
+### Main idea was to get a Todo app in React/Express working on a Raspberry Pi in kiosk mode.
 
 Accomplished, but no more progress on this, needs to be rewritten with web sockets at the center of the communication.
 
-###Notes: 
+### Notes: 
 
-####Auto start Express service with a service
+#### Auto start Express service with a service
 ```
 $ nano /etc/systemd/system/{service name}.service
 ```
@@ -31,7 +31,7 @@ $ sudo systemctl start {service name}
 $ sudo systemctl stop {service name}
 ```
 
-####Auto start Pi in Chromium Kiosk
+#### Auto start Pi in Chromium Kiosk
 ```
 $ nano /home/pi/.config/lxsession/LXDE-pi/autostart
 ```
@@ -41,7 +41,7 @@ $ nano /home/pi/.config/lxsession/LXDE-pi/autostart
 ```
 Note: Add paths if not already there lxsession/LXDE-pi/
 
-####Reverse Proxy: NGINX
+#### Reverse Proxy: NGINX
 ```
 $ sudo apt update
 $ sudo apt install nginx
